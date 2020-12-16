@@ -20,6 +20,10 @@ const routes: Array<RouteConfig> = [
   // }
   {
     path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
     name: 'Login',
     component: Login
   }

@@ -10,7 +10,7 @@
       >
         <a-form-item>
           <div id="form-title">
-            请登录
+            用户登录
           </div>
         </a-form-item>
         <a-form-item>
@@ -56,7 +56,12 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          const username = values.username
+          const password = values.password
+          this.$store.dispatch('login', {
+            username,
+            password
+          })
         }
       })
     }

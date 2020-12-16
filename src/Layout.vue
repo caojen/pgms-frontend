@@ -10,8 +10,15 @@
         v-model="collapsed"
         collapsible
         theme="light"
-        v-if=!this.isLogined
       >
+        <span v-for="(value, key, indexOuter) in menus" :key="indexOuter">
+          <a-menu v-if="value.when" :default-selected-keys=value.default mode="inline" @click="menuClick" @openChange="menuOpenChange">
+            <a-menu-item v-for="settings in value.items" :key="settings.key">
+              <a-icon :type=settings.icon />
+              <span> {{ settings.description }} </span>
+            </a-menu-item>
+          </a-menu>
+        </span>
       </a-layout-sider>
       <a-layout>
         <a-layout-content
@@ -26,17 +33,39 @@
   </a-layout>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import Vue from 'vue'
+import menus from '@/util/menus'
+
 export default {
   computed: {
     isLogined () {
-      const res = this.$store.getters.isLogined
-      return res
+      return this.$store.getters.isLogined
+    }
+  },
+  watch: {
+    // 利用watcher，将computed的返回值set到menus对象变量中
+    isLogined (newVal) {
+      Vue.set(this.menus.notLogined, 'when', !newVal)
     }
   },
   data () {
     return {
-      collapsed: false
+      collapsed: true,
+      menus
+    }
+  },
+  created () {
+    this.$store.dispatch('getUserStatus')
+  },
+  mounted () {
+    const isLogined = this.$store.getters.isLogined
+    Vue.set(this.menus.notLogined, 'when', !isLogined)
+  },
+  methods: {
+    menuClick ({ key }) {
+      if (key !== this.$route.path) {
+        this.$router.push(key)
+      }
     }
   }
 }
