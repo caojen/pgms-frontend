@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default {
   isLogined (state: { username: string }): boolean {
-    const islogin = !!state.username
-    return true
+    const islogin = !state.username
+    return islogin
   }
 }

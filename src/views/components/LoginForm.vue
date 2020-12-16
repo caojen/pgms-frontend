@@ -10,7 +10,7 @@
       >
         <a-form-item>
           <div id="form-title">
-            请先登录
+            请登录
           </div>
         </a-form-item>
         <a-form-item>

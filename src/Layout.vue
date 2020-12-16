@@ -1,6 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-top-side-2">
-    <a-layout-header class="header">
+    <a-layout-header class="header" theme="light">
       <div class="logo" />
     </a-layout-header>
     <a-layout>
