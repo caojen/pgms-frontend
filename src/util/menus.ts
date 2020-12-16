@@ -9,5 +9,15 @@ export default {
       description: '用户登录',
       goto: '/login' // 未使用
     }]
+  },
+  attendAdmin: {
+    when: false,
+    default: ['/admin/attend'],
+    items: [{
+      key: '/admin/attend',
+      icon: 'snippets',
+      description: '考勤管理',
+      goto: '/admin/attend'
+    }]
   }
 }

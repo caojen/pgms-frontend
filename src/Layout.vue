@@ -12,7 +12,7 @@
         theme="light"
       >
         <span v-for="(value, key, indexOuter) in menus" :key="indexOuter">
-          <a-menu v-if="value.when" :default-selected-keys=value.default mode="inline" @click="menuClick" @openChange="menuOpenChange">
+          <a-menu v-if="value.when" :default-selected-keys=value.default mode="inline" @click="menuClick">
             <a-menu-item v-for="settings in value.items" :key="settings.key">
               <a-icon :type=settings.icon />
               <span> {{ settings.description }} </span>
@@ -40,24 +40,30 @@ export default {
   computed: {
     isLogined () {
       return this.$store.getters.isLogined
+    },
+    isAttendAdmin () {
+      return this.$store.getters.isAttendAdmin
     }
   },
   watch: {
     // 利用watcher，将computed的返回值set到menus对象变量中
     isLogined (newVal) {
       Vue.set(this.menus.notLogined, 'when', !newVal)
+    },
+    isAttendAdmin (newVal) {
+      Vue.set(this.menus.attendAdmin, 'when', newVal)
     }
   },
   data () {
     return {
-      collapsed: true,
+      collapsed: false,
       menus
     }
   },
   created () {
     this.$store.dispatch('getUserStatus')
   },
-  mounted () {
+  beforeMount () {
     const isLogined = this.$store.getters.isLogined
     Vue.set(this.menus.notLogined, 'when', !isLogined)
   },

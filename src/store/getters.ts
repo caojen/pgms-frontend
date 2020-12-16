@@ -7,5 +7,9 @@ export default {
   isLogined (state: { username: string }): boolean {
     const islogin = !!state.username
     return islogin
+  },
+  isAttendAdmin (state: { admintype: string }): boolean {
+    const isAttendAdmin = state.admintype === 'attend'
+    return isAttendAdmin
   }
 }

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Login from '@/views/Login.vue'
+import Redirector from '@/views/components/Redirector.vue'
+import AttendAdminHome from '@/views/AttendAdmin/AttendAdminHome.vue'
 
 Vue.use(VueRouter)
 
@@ -20,12 +22,26 @@ const routes: Array<RouteConfig> = [
   // }
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/redirect'
   },
   {
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/admin/attend',
+    name: 'AttendAdminHome',
+    component: AttendAdminHome
+  },
+  {
+    path: '/redirect',
+    name: 'RedirectingHome',
+    component: Redirector
+  },
+  {
+    path: '*',
+    redirect: '/redirect'
   }
 ]
 
