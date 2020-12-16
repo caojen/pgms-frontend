@@ -33,30 +33,31 @@
           collapsible
           theme="light"
         >
-          <span v-for="(value, key, indexOuter) in menus" :key="indexOuter">
-            <a-menu
-              v-if="value.when"
-              :default-selected-keys=value.default
-              mode="inline"
-              :open-keys.sync="value.openKeys"
-              @click="menuClick"
+          <a-menu
+            mode="inline"
+            :default-selected-keys="defaultSelected"
+            :open-keys.sync="openKeys"
+            @click="menuClick"
+          >
+            <a-sub-menu
+              v-for="subMenu in menus.filter(r => r.when)"
+              :key="subMenu.subMenu.key"
+            >
+              <span slot="title">
+                <a-icon :type=subMenu.subMenu.icon />
+                <span> {{subMenu.subMenu.description}} </span>
+              </span>
+              <a-menu-item
+                v-for="item in subMenu.subMenu.subItems"
+                :key=item.key
               >
-              <a-sub-menu v-for="item in value.items" :key="item.key">
-                <span slot="title">
-                  <a-icon :type=item.icon />
-                  <span>
-                    {{ item.description }}
-                  </span>
+                <a-icon :type=item.icon />
+                <span>
+                  {{ item.description }}
                 </span>
-                <a-menu-item v-for="it in item.subItems" :key="it.key">
-                  <a-icon :type=it.icon />
-                  <span>
-                    {{ it.description }}
-                  </span>
-                </a-menu-item>
-              </a-sub-menu>
-            </a-menu>
-          </span>
+              </a-menu-item>
+            </a-sub-menu>
+          </a-menu>
         </a-layout-sider>
         <a-layout>
           <a-layout-content
@@ -121,7 +122,7 @@
 </template>
 <script>
 import Vue from 'vue'
-import menus from '@/util/menus'
+import { menus, openKeys, indexMap, defaultSelected } from '@/util/menus'
 
 export default {
   computed: {
@@ -141,16 +142,18 @@ export default {
   watch: {
     // 利用watcher，将computed的返回值set到menus对象变量中
     isLogined (newVal) {
-      Vue.set(this.menus.notLogined, 'when', !newVal)
+      Vue.set(this.menus[indexMap.notLogined], 'when', !newVal)
     },
     isAttendAdmin (newVal) {
-      Vue.set(this.menus.attendAdmin, 'when', newVal)
+      Vue.set(this.menus[indexMap.attendAdmin], 'when', newVal)
     }
   },
   data () {
     return {
       collapsed: false,
       menus,
+      openKeys,
+      defaultSelected,
       showPasswordChangeModal: false,
 
       newPass: '',
@@ -165,7 +168,7 @@ export default {
   },
   beforeMount () {
     const isLogined = this.$store.getters.isLogined
-    Vue.set(this.menus.notLogined, 'when', !isLogined)
+    Vue.set(this.menus[indexMap.notLogined], 'when', !isLogined)
   },
   methods: {
     menuClick ({ key }) {

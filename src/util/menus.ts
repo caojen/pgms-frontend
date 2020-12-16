@@ -1,8 +1,12 @@
+export const openKeys = ['opened']
+export const defaultSelected = [
+  '/login',
+  '/admin/attend'
+]
+
 const notLogined = {
   when: false,
-  default: ['/login'],
-  openKeys: ['opened'],
-  items: [{
+  subMenu: {
     key: 'opened',
     icon: 'check',
     description: '管理系统',
@@ -10,15 +14,17 @@ const notLogined = {
       key: '/login',
       icon: 'user-add',
       description: '用户登录'
+    }, {
+      key: '/find-pass',
+      icon: 'block',
+      description: '忘记密码'
     }]
-  }]
+  }
 }
 
 const attendAdmin = {
   when: false,
-  default: ['/admin/attend'],
-  openKeys: ['opened'],
-  items: [{
+  subMenu: {
     key: 'opened',
     icon: 'snippets',
     description: '考勤管理',
@@ -47,11 +53,39 @@ const attendAdmin = {
       icon: 'environment',
       description: '位置管理'
     }]
-  }]
+  }
 }
 
-// 用于layout.左侧栏的菜单
-export default {
+const contact = {
+  when: true,
+  subMenu: {
+    key: 'closed',
+    icon: 'phone',
+    description: '联系我们',
+    subItems: [{
+      key: '/contact',
+      icon: 'contacts',
+      description: '联系方式'
+    }, {
+      key: '/content/bug',
+      icon: 'bug',
+      description: 'Bug报告'
+    }, {
+      key: '/content/feedback',
+      icon: 'rollback',
+      description: '反馈意见'
+    }]
+  }
+}
+
+export const menus = [
   notLogined,
-  attendAdmin
+  attendAdmin,
+  contact
+]
+
+export const indexMap = {
+  notLogined: 0,
+  attendAdmin: 1,
+  contact: 2
 }
