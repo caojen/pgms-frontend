@@ -144,8 +144,9 @@ export default {
       passRuleDes: '长度为8到20个字符'
     }
   },
-  created () {
-    this.$store.dispatch('getUserStatus')
+  async beforeCreate () {
+    await this.$store.dispatch('getUserStatus')
+    setTimeout(() => console.log('asking'), 1000)
   },
   beforeMount () {
     const isLogined = this.$store.getters.isLogined
@@ -160,7 +161,7 @@ export default {
     logout () {
       this.$store.dispatch('userLogout')
         .finally(() => {
-          this.$router.push('/redirect')
+          this.$router.push('/')
         })
     },
     hidePasswordChangeModal () {

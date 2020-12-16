@@ -19,7 +19,7 @@ export default {
   watch: {
     isLogined (newVal) {
       if (newVal) {
-        this.$router.push('/redirect')
+        this.$router.push('/')
       }
     }
   }
