@@ -1,5 +1,5 @@
 <template>
-  <div>正在重定向中...</div>
+  <div></div>
 </template>
 
 <script>
@@ -35,6 +35,9 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    this.redirect()
   }
 }
 </script>

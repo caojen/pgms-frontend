@@ -1,7 +1,28 @@
 <template>
   <a-layout id="components-layout-demo-top-side-2">
-    <a-layout-header class="header" theme="light">
-      <div class="logo" />
+    <a-layout-header id="layout-header">
+      <img src="@/assets/logo.png" alt="校徽" class="logo">
+      <span class="title">
+        <a-space>
+          <span>计算机学院</span>
+          <span>研究生管理系统</span>
+        </a-space>
+      </span>
+      <span class="user-controller" v-if=this.isLogined>
+        <a-dropdown>
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+            <a-icon type="user" style="fontSize: 19px"/>
+          </a>
+          <a-menu slot="overlay">
+            <a-menu-item>
+              修改密码
+            </a-menu-item>
+            <a-menu-item @click="logout">
+              退出登录
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </span>
     </a-layout-header>
     <a-layout>
       <a-layout-sider
@@ -72,6 +93,12 @@ export default {
       if (key !== this.$route.path) {
         this.$router.push(key)
       }
+    },
+    logout () {
+      this.$store.dispatch('userLogout')
+        .finally(() => {
+          this.$router.push('/redirect')
+        })
     }
   }
 }
@@ -84,5 +111,20 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   margin: 16px 28px 16px 0;
   float: left;
+}
+
+#layout-header {
+  background: white;
+  border-bottom: 2px solid black;
+}
+
+.title {
+  width: 80%;
+  font-size: 28px;
+  color: black;
+  font-weight: bolder;
+}
+.user-controller {
+  float: right;
 }
 </style>

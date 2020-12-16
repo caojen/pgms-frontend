@@ -19,3 +19,7 @@ export function login (username: string, password: string) {
     password: ePassword
   })
 }
+
+export function logout () {
+  return http.delete(api.userLogout)
+}

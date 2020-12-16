@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as api from '@/api/user'
+import { userLogout } from '@/api/user/api'
 
 Vue.use(Vuex)
 
@@ -47,5 +48,13 @@ export default {
         commit('setAdmintype', res.data.admin.type || '')
       }
     }
+  },
+  async userLogout({ commit }: any) {
+    await api.logout();
+    // 无论如何，直接退出
+    commit('setUsername', '')
+    commit('setUid', '')
+    commit('setUsertype', '')
+    commit('setAdmintype', '')
   }
 }
