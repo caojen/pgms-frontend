@@ -34,11 +34,27 @@
           theme="light"
         >
           <span v-for="(value, key, indexOuter) in menus" :key="indexOuter">
-            <a-menu v-if="value.when" :default-selected-keys=value.default mode="inline" @click="menuClick">
-              <a-menu-item v-for="settings in value.items" :key="settings.key">
-                <a-icon :type=settings.icon />
-                <span> {{ settings.description }} </span>
-              </a-menu-item>
+            <a-menu
+              v-if="value.when"
+              :default-selected-keys=value.default
+              mode="inline"
+              :open-keys.sync="value.openKeys"
+              @click="menuClick"
+              >
+              <a-sub-menu v-for="item in value.items" :key="item.key">
+                <span slot="title">
+                  <a-icon :type=item.icon />
+                  <span>
+                    {{ item.description }}
+                  </span>
+                </span>
+                <a-menu-item v-for="it in item.subItems" :key="it.key">
+                  <a-icon :type=it.icon />
+                  <span>
+                    {{ it.description }}
+                  </span>
+                </a-menu-item>
+              </a-sub-menu>
             </a-menu>
           </span>
         </a-layout-sider>
@@ -146,7 +162,6 @@ export default {
   },
   async beforeCreate () {
     await this.$store.dispatch('getUserStatus')
-    setTimeout(() => console.log('asking'), 1000)
   },
   beforeMount () {
     const isLogined = this.$store.getters.isLogined

@@ -61,6 +61,8 @@ export default {
           this.$store.dispatch('login', {
             username,
             password
+          }).then(() => {
+            this.$message.success('登录成功')
           })
         }
       })

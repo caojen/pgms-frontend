@@ -19,8 +19,13 @@ export default {
   watch: {
     isLogined (newVal) {
       if (newVal) {
-        this.$router.push('/')
+        this.$router.push(this.getHomePage())
       }
+    }
+  },
+  methods: {
+    getHomePage () {
+      return '/admin/attend'
     }
   }
 }

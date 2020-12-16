@@ -21,7 +21,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '*',
-    redirect: '/'
+    name: '404-Page',
+    component: () => import('@/views/components/404.vue')
   }
 ]
 
