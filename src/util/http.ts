@@ -14,7 +14,8 @@ axios.interceptors.response.use(response => response, err => {
     notification.error({
       message: '请求失败',
       description: err.response.data.msg || '服务器未返回数据',
-      class: 'error'
+      class: 'error',
+      duration: 6
     })
   }
 
