@@ -1,63 +1,55 @@
 <template>
-  <a-form
-    id="views-components-form-login"
-    :form="form"
-    class="login-form"
-    @submit="handleSubmit"
-  >
-    <a-form-item>
-      <a-input
-        v-decorator="[
-          'userName',
-          { rules: [{ required: true, message: 'Please input your username!' }] },
-        ]"
-        placeholder="Username"
+  <div id="views-components-form-login-outer">
+    <div id="views-components-form-login-inner">
+      <a-form
+        id="views-components-form-login"
+        :form="form"
+        class="login-form"
+        @submit="handleSubmit"
+        :style="{ width: '400px' }"
       >
-        <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
-      </a-input>
-    </a-form-item>
-    <a-form-item>
-      <a-input
-        v-decorator="[
-          'password',
-          { rules: [{ required: true, message: 'Please input your Password!' }] },
-        ]"
-        type="password"
-        placeholder="Password"
-      >
-        <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-      </a-input>
-    </a-form-item>
-    <a-form-item>
-      <a-checkbox
-        v-decorator="[
-          'remember',
-          {
-            valuePropName: 'checked',
-            initialValue: true,
-          },
-        ]"
-      >
-        Remember me
-      </a-checkbox>
-      <a class="login-form-forgot" href="">
-        Forgot password
-      </a>
-      <a-button type="primary" html-type="submit" class="login-form-button">
-        Log in
-      </a-button>
-      Or
-      <a href="">
-        register now!
-      </a>
-    </a-form-item>
-  </a-form>
+        <a-form-item>
+          <div id="form-title">
+            请先登录
+          </div>
+        </a-form-item>
+        <a-form-item>
+          <a-input
+            v-decorator="[
+              'username',
+              { rules: [{ required: true, message: '请输入用户名！' }] },
+            ]"
+            placeholder="用户名"
+          >
+            <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
+          </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-input
+            v-decorator="[
+              'password',
+              { rules: [{ required: true, message: '请输入密码！' }] },
+            ]"
+            type="password"
+            placeholder="密码"
+          >
+            <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+          </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit" class="login-form-button">
+            登录
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   beforeCreate () {
-    this.form = this.$form.createForm(this, { name: 'normal_login' })
+    this.form = this.$form.createForm(this, { name: 'user_login' })
   },
   methods: {
     handleSubmit (e) {
@@ -71,11 +63,30 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+
+#views-components-form-login-outer {
+  height: 100%;
+}
+#views-components-form-login-inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  padding: 3%;
+  border: 1px solid black;
+  box-shadow: 8px 8px 3px #888888;
+}
+#form-title {
+  text-align: center;
+  color: darkgoldenrod;
+  font-size: 24px;
+  font-weight: bolder;
+}
 #views-components-form-login .login-form {
   max-width: 300px;
 }
-#views-components-form-login .login-form-forgot {
+.login-form-forgot {
   float: right;
 }
 #views-components-form-login .login-form-button {

@@ -10,21 +10,30 @@
         v-model="collapsed"
         collapsible
         theme="light"
-        v-if=false
+        v-if=!this.isLogined
       >
       </a-layout-sider>
       <a-layout>
         <a-layout-content
           :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '500px' }"
         >
-          <router-view />
+          <router-view
+            :style="{height: '100%'}"
+          />
         </a-layout-content>
       </a-layout>
     </a-layout>
   </a-layout>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
+  computed: {
+    isLogined () {
+      const res = this.$store.getters.isLogined
+      return res
+    }
+  },
   data () {
     return {
       collapsed: false
