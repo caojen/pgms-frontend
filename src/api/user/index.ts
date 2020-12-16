@@ -20,6 +20,19 @@ export function login (username: string, password: string) {
   })
 }
 
+/**
+ * user logout
+ */
 export function logout () {
   return http.delete(api.userLogout)
+}
+
+/**
+ * user change password
+ * @param newpass
+ */
+export function changePassword (uid: number, newpass: string) {
+  return http.put(api.changePassword, {
+    newpassword: newpass
+  })
 }

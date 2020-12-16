@@ -56,5 +56,8 @@ export default {
     commit('setUid', '')
     commit('setUsertype', '')
     commit('setAdmintype', '')
+  },
+  userChangePassword({ commit }: any, { uid, newpass }: any) {
+    return api.changePassword(uid, newpass);
   }
 }
