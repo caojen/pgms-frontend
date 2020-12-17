@@ -172,10 +172,20 @@
             </a-upload>
             <p></p>
             <div>
-              <a-button :disabled="fileList.length === 0" @click="resolveTemplate"> 解析 </a-button>
+              <div>
+                <a-button :disabled="fileList.length === 0" @click="resolveTemplate"> 解析 </a-button>
+              </div>
+              <p></p>
+              <a-progress
+                :percent="parsePercent"
+                status="active"
+                style="width: 97%"
+                :stroke-color="{
+                  '0%': '#108ee9',
+                  '100%': '#87d068',
+                }"
+              />
             </div>
-            <p></p>
-            <a-progress :percent="parsePercent" status="active" style="width: 90%"/>
           </div>
         </div>
         <div class="steps-action">
@@ -524,7 +534,7 @@ export default {
     },
     beforeUploadFile (file) {
       if (this.fileList.length >= 1) {
-        this.$message.error('只需要上传一个模版文件即可')
+        this.$message.error('只需要上传一个模版文件即可，将鼠标放在文件名上面就可以看到删除按钮')
       } else {
         this.fileList = [...this.fileList, file]
       }
