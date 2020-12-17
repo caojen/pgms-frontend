@@ -138,8 +138,62 @@
       <p></p>
     </a-modal>
     <!-- 批量添加学生的Modal -->
-    <a-modal v-model="addingStudents" title="批量导入学生" @ok="handleOk()" :maskClosable="false">
-      bilibili
+    <a-modal
+      v-model="addingStudents"
+      title="批量导入学生"
+      @ok="addingStudentsDone()"
+      :maskClosable="false"
+      :width=1000
+    >
+      <div>
+        <a-steps :current="current">
+          <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+        </a-steps>
+        <div class="steps-content">
+          <div v-if="current===0">
+            <p>首先，请准备学生的以下信息：</p>
+            <ul>
+              <li>登录账号（可以直接用学号）</li>
+              <li>登录密码（不为空即可）</li>
+              <li>学生姓名</li>
+              <li>学生的联系邮箱</li>
+              <li>学生学号</li>
+              <li>学生对应的老师的登录账号（不能为空）</li>
+            </ul>
+            <p>然后，<a-button @click="downloadTemplate" type="link">点击这里</a-button>下载模版</p>
+            <p>根据下载的模版，填充相关的信息，然后点击下面的按钮进入下一步</p>
+          </div>
+          <div v-if="current===1">
+            <p>请点击下面的按钮选择填充好的模版文件</p>
+            <p>选择文件后，请点击“解析”按钮对文件进行解析</p>
+            <p>等待解析完成后（进度条显示100%），点击继续进入下一步</p>
+            <a-upload :file-list="fileList" :remove="removeFile" :before-upload="beforeUploadFile">
+              <a-button> <a-icon type="upload" /> 选择模版文件 </a-button>
+            </a-upload>
+            <p></p>
+            <div>
+              <a-button :disabled="fileList.length === 0" @click="resolveTemplate"> 解析 </a-button>
+            </div>
+            <p></p>
+            <a-progress :percent="parsePercent" status="active" style="width: 90%"/>
+          </div>
+        </div>
+        <div class="steps-action">
+          <a-button v-if="current < steps.length - 1" type="primary" @click="() => current++">
+            继续
+          </a-button>
+          <a-button
+            v-if="current == steps.length - 1"
+            type="primary"
+            @click="$message.success('Processing complete!')"
+          >
+            完成
+          </a-button>
+          <a-button v-if="current > 0" style="margin-left: 8px" @click="current--">
+            撤销
+          </a-button>
+        </div>
+      </div>
     </a-modal>
     <!-- 修改密码的Modal -->
     <a-modal v-model="changingPassword" title="修改密码" @ok="changePasswordConfirm">
@@ -174,7 +228,10 @@
 
 <script>
 /* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable no-proto */
 import * as api from '@/api/attendAdmin'
+import * as xlsx from 'xlsx'
+import { book2blob, openDownloadDialog } from '@/util/fs'
 
 export default {
   name: 'AttendAdminStudents',
@@ -264,12 +321,35 @@ export default {
       changingInfoUsername: '',
       changingInfoName: '',
       changingInfoEmail: '',
-      changingInfoSid: ''
+      changingInfoSid: '',
+
+      current: 0,
+      steps: [
+        // content未使用，通过v-if写在html里面了
+        {
+          title: '填充模版',
+          content: '你需要填充一个含有学生信息的模版'
+        },
+        {
+          title: '上传模版',
+          content: '将已经写好的模版上传'
+        },
+        {
+          title: '预览',
+          content: '通过解析模版，你可以看到学生的大致信息'
+        },
+        {
+          title: '上传',
+          content: '学生信息上传到服务器'
+        }
+      ],
+      fileList: [],
+      studentsInfo: [],
+      parsePercent: 0
     }
   },
   computed: {
     data () {
-      console.log(this.$store.state.attendAdmin.students.length)
       return this.$store.state.attendAdmin.students
     },
     pagination () {
@@ -329,7 +409,6 @@ export default {
       this.addingStudents = true
     },
     addingStudentChangeTeacher (value) {
-      console.log('selected: ', value)
       if (value.length > 1) {
         this.$message.error('超过1个老师是未定义行为，将会选择第一个老师')
       }
@@ -347,10 +426,8 @@ export default {
       } else {
         this.addingStudentInfo.tid = -1
       }
-      console.log(this.addingStudentInfo)
     },
     addingStudentQueryTeacher (value) {
-      console.log('searching', value)
       this.$store.dispatch('queryTeacherByName', value)
     },
     addStudentDone () {
@@ -380,8 +457,6 @@ export default {
       }
     },
     changePassword (info) {
-      console.log('change password')
-      console.log(info)
       this.changingPasswordUsername = info.username
       this.changingPasswordId = info.id
       this.changingPasswordNewPass = ''
@@ -431,7 +506,77 @@ export default {
             this.fetch()
           })
       }
+    },
+    downloadTemplate () {
+      const template = [
+        ['登录账号', '密码', '姓名', '学号', '联系邮箱', '老师的联系方式']
+      ]
+      const sheet = xlsx.utils.aoa_to_sheet(template)
+      const workbook = xlsx.utils.book_new()
+      xlsx.utils.book_append_sheet(workbook, sheet, 'sheet1')
+      openDownloadDialog(book2blob(workbook), 'template.xlsx')
+    },
+    removeFile (file) {
+      const index = this.fileList.indexOf(file)
+      const newFileList = this.fileList.slice()
+      newFileList.splice(index, 1)
+      this.fileList = newFileList
+    },
+    beforeUploadFile (file) {
+      if (this.fileList.length >= 1) {
+        this.$message.error('只需要上传一个模版文件即可')
+      } else {
+        this.fileList = [...this.fileList, file]
+      }
+      return false
+    },
+    resolveTemplate () {
+      const file = this.fileList[0]
+      const reader = new FileReader()
+      reader.onload = () => {
+        const content = reader.result
+        const workbook = xlsx.read(content, { type: 'array' })
+        const sheet = workbook.Sheets.sheet1
+        const json = xlsx.utils.sheet_to_json(sheet)
+        const size = json.length
+        const parseResult = []
+        for (let i = 0; i < size; i++) {
+          this.parsePercent = parseInt(i * 1.0 / size * 100)
+          const username = json[i]['登录账号']
+          const password = json[i]['密码']
+          const name = json[i]['姓名']
+          const sid = json[i]['学号']
+          const email = json[i]['联系邮箱']
+          const tusername = json[i]['老师的联系方式']
+          parseResult.push({
+            username,
+            password,
+            name,
+            email,
+            student_id: sid,
+            teacher_username: tusername
+          })
+        }
+        this.parsePercent = 100
+        this.studentsInfo = parseResult
+      }
+      reader.readAsArrayBuffer(file)
     }
   }
 }
 </script>
+
+<style scoped>
+.steps-content {
+  margin-top: 16px;
+  border: 1px dashed #e9e9e9;
+  border-radius: 6px;
+  background-color: #fafafa;
+  min-height: 300px;
+  padding-top: 10px;
+  padding-left: 30px;
+}
+.steps-action {
+  margin-top: 24px;
+}
+</style>

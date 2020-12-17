@@ -40,8 +40,6 @@ export default {
     const res = await api.queryTeacherByName(name)
     const data = res.data
 
-    console.log('getdata', data)
-
     commit('setQueryTeachers', data)
   }
 }
