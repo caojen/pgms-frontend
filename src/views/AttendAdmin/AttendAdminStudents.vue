@@ -180,7 +180,6 @@ export default {
   name: 'AttendAdminStudents',
   data () {
     return {
-      first: true,
       loading: false,
       searchText: '',
       searchInput: null,
@@ -297,10 +296,6 @@ export default {
       })
     },
     fetch (params = {}) {
-      if (this.first) {
-        this.$message.warning('警告：经测试，使用username筛选会出现渲染缺失情况，请尽量使用name筛选', 5)
-        this.first = false
-      }
       this.loading = true
       const pagination = { ...this.pagination }
       const offset = pagination.current - 1
