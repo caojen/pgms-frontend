@@ -4,6 +4,7 @@ import state from './state'
 import getters from './getters'
 import mutations from './mutations'
 import actions from './actions'
+import attendAdmin from './AttendAdmin'
 
 Vue.use(Vuex)
 
@@ -11,5 +12,8 @@ export default new Vuex.Store({
   state,
   mutations,
   actions,
-  getters
+  getters,
+  modules: {
+    attendAdmin
+  }
 })
