@@ -34,5 +34,14 @@ export default {
       return s
     })
     commit('setStudents', students)
+  },
+  
+  async queryTeacherByName ({ commit }: any, name: string) {
+    const res = await api.queryTeacherByName(name)
+    const data = res.data
+
+    console.log('getdata', data)
+
+    commit('setQueryTeachers', data)
   }
 }

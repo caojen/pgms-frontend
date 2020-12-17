@@ -22,12 +22,14 @@ export function addOneAttendStudent (
   username: string,
   password: string,
   name: string,
+  email: string,
   teacher: number, // teacher's id
   student_id: string
 ) {
   return http.post(api.addOneAttendStudent, {
     username,
     password: ende.encodeToHttp(password),
+    email,
     name,
     teacher,
     student_id
@@ -78,4 +80,8 @@ export function updateStudentInfo (id: number, info: {
  */
 export function updateStudentTeacher (id: number, tid: number) {
   return http.put(`${api.updateStudentTeacher}/${id}/teacher/${tid}`)
+}
+
+export function queryTeacherByName (name: string) {
+  return http.get(`${api.queryTeacherByName}?name=${name}`)
 }

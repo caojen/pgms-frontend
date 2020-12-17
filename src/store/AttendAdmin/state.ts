@@ -8,5 +8,8 @@ export default {
     current: 1,
     pageSize: 20,
     total: 0
-  } // current, pageSize, total
+  }, // current, pageSize, total
+
+  // queryteacher when adding student:
+  queryTeachers: [] // {id, name}
 }

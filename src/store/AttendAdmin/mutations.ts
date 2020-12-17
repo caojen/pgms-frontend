@@ -22,5 +22,8 @@ export default {
   },
   setStudents (state: StateType, students: {}[]) {
     Vue.set(state, 'students', students)
+  },
+  setQueryTeachers (state: StateType, teachers: {}[]) {
+    Vue.set(state, 'queryTeachers', teachers)
   }
 }
