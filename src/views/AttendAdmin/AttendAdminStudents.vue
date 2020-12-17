@@ -75,6 +75,34 @@
           {{ text }}
         </template>
       </template>
+
+      <span slot="action" slot-scope="text, record">
+        <a-config-provider :auto-insert-space-in-button="false">
+          <a-button type="primary" ghost @click="changePassword(record)">
+            修改密码
+          </a-button>
+        </a-config-provider>
+        <a-divider type="vertical" />
+        <a-config-provider :auto-insert-space-in-button="false">
+          <a-button type="primary" ghost @click="changeInfo(record)" style="color: green; border-color: green">
+            修改信息
+          </a-button>
+        </a-config-provider>
+        <a-divider type="vertical" />
+
+        <a-popconfirm
+          title="确定要删除这个学生吗？此操作不可恢复"
+          ok-text="Yes"
+          cancel-text="No"
+          @confirm="deleteStudent(record)"
+        >
+          <a-config-provider :auto-insert-space-in-button="false">
+            <a-button type="danger" ghost>
+              删除学生
+            </a-button>
+          </a-config-provider>
+        </a-popconfirm>
+      </span>
     </a-table>
 
     <!-- 添加学生Modal -->
@@ -113,10 +141,39 @@
     <a-modal v-model="addingStudents" title="批量导入学生" @ok="handleOk()" :maskClosable="false">
       bilibili
     </a-modal>
+    <!-- 修改密码的Modal -->
+    <a-modal v-model="changingPassword" title="修改密码" @ok="changePasswordConfirm">
+      <a-input v-model="changingPasswordUsername" disabled>
+        <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
+      </a-input>
+      <p></p>
+      <a-input-password v-model="changingPasswordNewPass" placeholder="新密码">
+        <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+      </a-input-password>
+    </a-modal>
+    <!-- 修改信息的Modal -->
+    <a-modal v-model="changingInfo" title="修改信息" @ok="changeInfoConfirm">
+      <a-input v-model="changingInfoUsername" disabled>
+        <a-icon slot="prefix" type="check" style="color: rgba(0,0,0,.25)" />
+      </a-input>
+      <p></p>
+      <a-input v-model="changingInfoName" placeholder="姓名">
+        <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
+      </a-input>
+      <p></p>
+      <a-input v-model="changingInfoSid" placeholder="学号">
+        <a-icon slot="prefix" type="search" style="color: rgba(0,0,0,.25)" />
+      </a-input>
+      <p></p>
+      <a-input v-model="changingInfoEmail" placeholder="联系邮箱">
+        <a-icon slot="prefix" type="mail" style="color: rgba(0,0,0,.25)" />
+      </a-input>
+    </a-modal>
   </div>
 </template>
 
 <script>
+/* eslint-disable @typescript-eslint/camelcase */
 import * as api from '@/api/attendAdmin'
 
 export default {
@@ -183,7 +240,8 @@ export default {
           width: '20%'
         },
         {
-          title: 'Actions'
+          title: 'Actions',
+          scopedSlots: { customRender: 'action' }
         }
       ],
       addingStudent: false,
@@ -195,7 +253,19 @@ export default {
         email: '',
         sid: '',
         tid: -1
-      }
+      },
+
+      changingPassword: false,
+      changingPasswordUsername: '',
+      changingPasswordNewPass: '',
+      changingPasswordId: -1,
+
+      changingInfo: false,
+      changingInfoId: -1,
+      changingInfoUsername: '',
+      changingInfoName: '',
+      changingInfoEmail: '',
+      changingInfoSid: ''
     }
   },
   computed: {
@@ -312,6 +382,59 @@ export default {
               this.fetch()
             })
         }
+      }
+    },
+    changePassword (info) {
+      console.log('change password')
+      console.log(info)
+      this.changingPasswordUsername = info.username
+      this.changingPasswordId = info.id
+      this.changingPasswordNewPass = ''
+      this.changingPassword = true
+    },
+    deleteStudent (info) {
+      api.deleteOneStudent(info.id)
+        .then(() => {
+          this.$message.success('已成功删除学生')
+          this.fetch()
+        })
+    },
+    changePasswordConfirm () {
+      api.changePasswordForStudent(this.changingPasswordId, this.changingPasswordNewPass)
+        .then(() => {
+          this.changingPasswordNewPass = ''
+          this.changingPasswordId = -1
+          this.changingPasswordUsername = ''
+          this.changingPassword = false
+          this.$message.success('修改密码成功')
+        })
+    },
+    changeInfo (info) {
+      this.changingInfoId = info.id
+      this.changingInfoUsername = info.username
+      this.changingInfoEmail = info.email
+      this.changingInfoSid = info.student_id
+      this.changingInfoName = info.name
+      this.changingInfo = true
+    },
+    changeInfoConfirm () {
+      if (!this.changingInfoEmail || !this.changingInfoSid || !this.changingInfoName) {
+        this.$message.error('请提供足够的信息')
+      } else {
+        api.updateStudentInfo(this.changingInfoId, {
+          email: this.changingInfoEmail,
+          student_id: this.changingInfoSid,
+          name: this.changingInfoName
+        })
+          .then(() => {
+            this.changingInfo = false
+            this.changingInfoEmail = ''
+            this.changingInfoSid = ''
+            this.changingInfoName = ''
+            this.changingInfoId = -1
+            this.$message.success('修改学生信息成功')
+            this.fetch()
+          })
       }
     }
   }

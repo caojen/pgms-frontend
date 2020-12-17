@@ -18,6 +18,10 @@ const notLogined = {
       key: '/find-pass',
       icon: 'block',
       description: '忘记密码'
+    }, {
+      key: '/token',
+      icon: 'unlock',
+      description: 'Token'
     }]
   }
 }
