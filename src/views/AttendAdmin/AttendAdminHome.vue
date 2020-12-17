@@ -1,11 +1,14 @@
 <template>
   <div>
-    <a-card :loading="loading" title="我的信息" style="max-width: 30%;">
+    <a-card :loading="loading" title="我的信息" style="max-width: 50%;">
       <p>
         欢迎，{{ name }}
       </p>
       <p>
         管理员ID号: {{ id }}
+      </p>
+      <p>
+        考虑到这个页面是给自己人看的，就没有做这么精细了
       </p>
     </a-card>
   </div>
