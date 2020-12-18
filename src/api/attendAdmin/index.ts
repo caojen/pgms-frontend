@@ -103,7 +103,7 @@ export function updateOneTeacher (tid: number, body: {
   personal_page: string;
   email: string;
 }) {
-  return http.post(`${api.updateOneTeacher}/${tid}`, body)
+  return http.put(`${api.updateOneTeacher}/${tid}`, body)
 }
 
 export function getOneTeacherInfo (tid: number) {
@@ -120,7 +120,7 @@ export function deleteOneTeacher (tid: number) {
 
 export function changePasswordForTeacher (tid: number, newPass: string) {
   const ePass = ende.encodeToHttp(newPass)
-  return http.put(`${api.changePasswordForTeacher}/${tid}`, {
+  return http.put(`${api.changePasswordForTeacher}/${tid}/password`, {
     password: ePass
   })
 }

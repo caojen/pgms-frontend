@@ -69,7 +69,7 @@
         </a-config-provider>
         <a-divider type="vertical" />
         <a-config-provider :auto-insert-space-in-button="false">
-          <a-button type="primary" ghost @click="changeInfo(record)" style="color: brown; border-color: brown">
+          <a-button type="primary" ghost @click="toShowStudents(record)" style="color: brown; border-color: brown">
             查看学生
           </a-button>
         </a-config-provider>
@@ -129,6 +129,58 @@
         :auto-size="{ minRows: 2, maxRows: 6 }"
         class="adding-teacher-input-box"
       />
+    </a-modal>
+
+    <!-- 修改老师密码提示框 -->
+    <a-modal
+      v-model="showingChangeTeacherPassword"
+      title="修改老师密码"
+      @ok="changeTeacherPasswordConfirm"
+      @cancel="changeTeacherPasswordConfirm"
+      :width=500
+    >
+      <div>
+        <a-input v-model="changeTeacherPasswordUsername" disabled/>
+        <p></p>
+        <a-input-password v-model="changeTeacherPasswordConfirmPass" placeholder="新密码"/>
+      </div>
+    </a-modal>
+    <!-- 修改老师信息提示框 -->
+    <a-modal
+      v-model="showingChangeInfo"
+      title="修改老师信息"
+      @ok="changeInfoConfirm"
+      @cancel="changeInfoCancel"
+      :width=500
+    >
+      <a-input v-model="changeInfoUsername" placeholder="登录账号" class="adding-teacher-input-box" disabled/>
+      <a-input v-model="changeInfoName" placeholder="姓名" class="adding-teacher-input-box"/>
+      <a-input v-model="changeInfoEmail" placeholder="邮箱" class="adding-teacher-input-box"/>
+      <a-input v-model="changeInfoPersonalPage" placeholder="个人主页" class="adding-teacher-input-box"/>
+      <a-textarea
+        v-model="changeInfoResearchArea"
+        placeholder="研究领域"
+        :auto-size="{ minRows: 2, maxRows: 6 }"
+        class="adding-teacher-input-box"
+      />
+    </a-modal>
+    <!-- 展示学生提示框 -->
+    <a-modal
+      v-model="showingStudents"
+      :title="`查看 ${showStudentTUsername} 学生`"
+      @ok="() => showingStudents = false"
+      :width=1000
+      :footer="null"
+    >
+      <a-table
+        :columns="showingStudentsColumn"
+        :row-key="record => record.index"
+        :data-source="showStudents"
+        :pagination="showStudentsTablePagination"
+        :loading="fetchingStudents"
+        @change="handleShowStudentTableChange"
+      >
+      </a-table>
     </a-modal>
   </div>
 </template>
@@ -206,7 +258,50 @@ export default {
         current: 1,
         pageSize: 20,
         total: 0
-      }
+      },
+      showingChangeTeacherPassword: false,
+      changeTeacherPasswordId: -1,
+      changeTeacherPasswordUsername: '',
+      changeTeacherPasswordConfirmPass: '',
+      showingChangeInfo: false,
+      changeInfoId: -1,
+      changeInfoUsername: '',
+      changeInfoName: '',
+      changeInfoEmail: '',
+      changeInfoPersonalPage: '',
+      changeInfoResearchArea: '',
+      showingStudents: false,
+      showStudentTid: -1,
+      showStudentTUsername: '',
+      showStudents: [],
+      showStudentsAll: [],
+      showStudentsTablePagination: {
+        current: 1,
+        pageSize: 7,
+        total: 0
+      },
+      fetchingStudents: true,
+      showingStudentsColumn: [
+        {
+          title: '序号',
+          dataIndex: 'index',
+          width: '10%'
+        },
+        {
+          title: '姓名',
+          dataIndex: 'name',
+          width: '20%'
+        },
+        {
+          title: '学号',
+          dataIndex: 'student_id',
+          width: '20%'
+        },
+        {
+          title: '联系邮箱',
+          dataIndex: 'email'
+        }
+      ]
     }
   },
   mounted () {
@@ -328,6 +423,101 @@ export default {
           this.$message.success('删除老师成功')
           this.fetchShowingTeachers()
         })
+    },
+    changeTeacherPasswordConfirm () {
+      if (this.changeTeacherPasswordConfirmPass === '') {
+        this.$message.error('请提供有效信息')
+      } else {
+        api.changePasswordForTeacher(this.changeTeacherPasswordId, this.changeTeacherPasswordConfirmPass)
+          .then(() => {
+            this.showingChangeTeacherPassword = false
+            this.changeTeacherPasswordId = -1
+            this.changeTeacherPasswordConfirmPass = ''
+            this.changeTeacherPasswordUsername = ''
+            this.$message.success('修改成功')
+          })
+      }
+    },
+    changePassword (record) {
+      this.changeTeacherPasswordId = record.id
+      this.changeTeacherPasswordUsername = record.username
+      this.changeTeacherPasswordConfirmPass = ''
+      this.showingChangeTeacherPassword = true
+    },
+    changeInfo (record) {
+      this.changeInfoId = record.id
+      this.changeInfoUsername = record.username
+      this.changeInfoName = record.name
+      this.changeInfoEmail = record.email
+      this.changeInfoPersonalPage = record.personal_page
+      this.changeInfoResearchArea = record.research_area
+
+      this.showingChangeInfo = true
+    },
+    changeInfoConfirm () {
+      if (!this.changeInfoUsername || !this.changeInfoName ||
+        !this.changeInfoEmail || !this.changeInfoPersonalPage || !this.changeInfoResearchArea) {
+        this.$message.error('请提供必要信息')
+      } else {
+        api.updateOneTeacher(this.changeInfoId, {
+          name: this.changeInfoName,
+          research_area: this.changeInfoResearchArea,
+          personal_page: this.changeInfoPersonalPage,
+          email: this.changeInfoEmail
+        })
+          .then(() => {
+            this.$message.success('修改信息成功')
+            this.changeInfoId = -1
+            this.changeInfoUsername = ''
+            this.changeInfoName = ''
+            this.changeInfoEmail = ''
+            this.changeInfoPersonalPage = ''
+            this.changeInfoResearchArea = ''
+            this.showingChangeInfo = false
+            this.fetchShowingTeachers()
+          })
+      }
+    },
+    changeInfoCancel () {
+      this.showingChangeInfo = false
+      this.changeInfoId = -1
+      this.changeInfoUsername = ''
+      this.changeInfoName = ''
+      this.changeInfoEmail = ''
+      this.changeInfoPersonalPage = ''
+      this.changeInfoResearchArea = ''
+      this.showingChangeInfo = false
+    },
+    toShowStudents (record) {
+      this.showingStudents = true
+      this.showStudentTid = record.id
+      this.showStudentTUsername = record.name
+      this.fetchStudents()
+    },
+    fetchStudents () {
+      this.fetchingStudents = true
+      const tid = this.showStudentTid
+      api.getOneTeacherInfo(tid)
+        .then(res => {
+          const students = res.data.students
+          for (let i = 0; i < students.length; i++) {
+            students[i].index = i + 1
+          }
+          const count = res.data.students.length
+          const pager = { ...this.showStudentsTablePagination }
+          pager.total = count
+          pager.current = 1
+          this.showStudentsTablePagination = pager
+          this.showStudentsAll = students
+          this.showStudents = this.showStudentsAll.slice(0, pager.pageSize)
+          this.fetchingStudents = false
+        })
+    },
+    handleShowStudentTableChange (pagination) {
+      const pager = { ...this.showStudentsTablePagination }
+      pager.current = pagination.current
+      this.showStudentsTablePagination = pager
+      this.showStudents = this.showStudentsAll.slice(pager.pageSize * (pager.current - 1), pager.pageSize * pager.current)
     }
   }
 }
