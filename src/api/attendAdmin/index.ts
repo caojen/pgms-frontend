@@ -124,3 +124,10 @@ export function changePasswordForTeacher (tid: number, newPass: string) {
     password: ePass
   })
 }
+
+export function resetAllPasswordForTeacher (password: string) {
+  const ePass = ende.encodeToHttp(password)
+  return http.put(api.resetAllPasswordForTeacher, {
+    password: ePass
+  })
+}

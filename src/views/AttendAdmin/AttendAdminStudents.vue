@@ -2,18 +2,17 @@
   <div>
     <div style="height: 40px">
       <a-row>
-      <a-col :span="3" :offset="18">
-        <a-button type="primary" icon="plus" @click="handleShowAddingStudent()">
-          添加学生
-        </a-button>
-      </a-col>
-      <a-col :span="3">
-        <a-button type="primary" icon="usergroup-add" @click="handleShowAddingStudents()">
-          批量添加
-        </a-button>
-      </a-col>
-    </a-row>
-
+        <a-col :span="3" :offset="18">
+          <a-button type="primary" icon="plus" @click="handleShowAddingStudent()">
+            添加学生
+          </a-button>
+        </a-col>
+        <a-col :span="3">
+          <a-button type="primary" icon="usergroup-add" @click="handleShowAddingStudents()">
+            批量添加
+          </a-button>
+        </a-col>
+      </a-row>
     </div>
     <a-table
       :columns="columns"
@@ -445,6 +444,9 @@ export default {
     }
   },
   computed: {
+    isAttendAdmin () {
+      return this.$store.getters.isAttendAdmin
+    },
     queryTeachers () {
       return this.$store.state.attendAdmin.queryTeachers
     }
@@ -462,7 +464,11 @@ export default {
     }
   },
   mounted () {
-    this.fetch()
+    if (this.isAttendAdmin === false) {
+      this.$router.push('/')
+    } else {
+      this.fetch()
+    }
   },
   methods: {
     handleTableChange (pagination, filters, sorter) {
