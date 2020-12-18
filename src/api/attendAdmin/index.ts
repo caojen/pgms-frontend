@@ -110,8 +110,8 @@ export function getOneTeacherInfo (tid: number) {
   return http.get(`${api.getOneTeacherInfo}/${tid}`)
 }
 
-export function getAllTeachers () {
-  return http.get(api.getAllTeachers)
+export function getAllTeachers (pageSize: number, offset: number, name: string, username: string) {
+  return http.get(`${api.getAllTeachers}?pageSize=${pageSize}&offset=${offset}&name=${name}&username=${username}`)
 }
 
 export function deleteOneTeacher (tid: number) {

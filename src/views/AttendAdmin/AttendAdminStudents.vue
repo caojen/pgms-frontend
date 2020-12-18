@@ -510,7 +510,6 @@ export default {
           }
           this.showingStudents = students
           this.$set(this, 'showingStudents', students)
-          console.log('showing student updated', this.showingStudents)
           this.showingStudentsPagination = {
             total: count,
             pageSize,
