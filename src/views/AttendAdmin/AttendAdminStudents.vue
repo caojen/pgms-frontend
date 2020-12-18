@@ -615,14 +615,18 @@ export default {
         })
     },
     changePasswordConfirm () {
-      api.changePasswordForStudent(this.changingPasswordId, this.changingPasswordNewPass)
-        .then(() => {
-          this.changingPasswordNewPass = ''
-          this.changingPasswordId = -1
-          this.changingPasswordUsername = ''
-          this.changingPassword = false
-          this.$message.success('修改密码成功')
-        })
+      if (!this.changingPasswordNewPass) {
+        this.$message.error('请提供新密码')
+      } else {
+        api.changePasswordForStudent(this.changingPasswordId, this.changingPasswordNewPass)
+          .then(() => {
+            this.changingPasswordNewPass = ''
+            this.changingPasswordId = -1
+            this.changingPasswordUsername = ''
+            this.changingPassword = false
+            this.$message.success('修改密码成功')
+          })
+      }
     },
     changeInfo (info) {
       this.changingInfoId = info.id
