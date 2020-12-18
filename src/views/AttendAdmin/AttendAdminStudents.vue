@@ -283,7 +283,7 @@ export default {
         {
           title: '序号',
           dataIndex: 'index',
-          width: '5%'
+          width: '8%'
         },
         {
           title: '登录账号',
@@ -305,7 +305,7 @@ export default {
         {
           title: '姓名',
           dataIndex: 'name',
-          width: '16%',
+          width: '10%',
           scopedSlots: {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
@@ -322,15 +322,15 @@ export default {
         {
           title: '学号',
           dataIndex: 'student_id',
-          width: '15%'
+          width: '10%'
         },
         {
-          title: 'Email',
+          title: '联系邮件',
           dataIndex: 'email',
           width: '20%'
         },
         {
-          title: 'Actions',
+          title: '操作',
           scopedSlots: { customRender: 'action' }
         }
       ],
