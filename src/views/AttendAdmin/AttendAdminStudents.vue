@@ -484,6 +484,9 @@ export default {
       })
     },
     fetch (params = {}, confirm = undefined | Function) {
+      if (Object.keys(params).length === 0) {
+        params = this.showingStudentsPagination
+      }
       this.loading = true
       const pagination = { ...this.showingStudentsPagination }
       const offset = pagination.current - 1 || 0
@@ -615,7 +618,7 @@ export default {
       api.deleteOneStudent(info.id)
         .then(() => {
           this.$message.success('已成功删除学生')
-          this.fetch()
+          this.fetch(this.showingStudentsPagination)
         })
     },
     changePasswordConfirm () {

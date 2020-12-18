@@ -2,7 +2,7 @@
   <div>
     <div style="height: 40px">
       <a-row>
-        <a-col :span="3" :offset="15">
+        <a-col :span="3" :offset="18">
           <a-button type="primary" icon="lock" @click="handleShowResetAllPassword()">
             重设密码
           </a-button>
@@ -68,16 +68,28 @@
           </a-button>
         </a-config-provider>
         <a-divider type="vertical" />
+        <a-config-provider :auto-insert-space-in-button="false">
+          <a-button type="primary" ghost @click="changeInfo(record)" style="color: brown; border-color: brown">
+            查看学生
+          </a-button>
+        </a-config-provider>
+        <a-divider type="vertical" />
 
         <a-popconfirm
-          title="确定要删除这个学生吗？此操作不可恢复"
-          ok-text="Yes"
-          cancel-text="No"
-          @confirm="deleteStudent(record)"
+          ok-text="确认删除"
+          cancel-text="取消"
+          @confirm="deleteTeacher(record.id)"
+          style="max-width: 30%"
         >
+          <template slot="title">
+            <div>确定要删除这个老师吗？</div>
+            <div>请注意，由于级联，该老师的所有学生都会被删除</div>
+            <div>如果需要，请首先将该老师的学生备份</div>
+            <div>警告：删除操作不可撤销</div>
+          </template>
           <a-config-provider :auto-insert-space-in-button="false">
             <a-button type="danger" ghost>
-              删除学生
+              删除老师
             </a-button>
           </a-config-provider>
         </a-popconfirm>
@@ -164,7 +176,7 @@ export default {
         {
           title: '姓名',
           dataIndex: 'name',
-          width: '10%',
+          width: '15%',
           scopedSlots: {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
@@ -254,10 +266,15 @@ export default {
             this.addingTeacherConfirmPersonalPage = ''
             this.addingTeacherConfirmResearchArea = ''
             this.showingAddingTeacher = false
+            this.fetchShowingTeachers()
           })
       }
     },
     fetchShowingTeachers (params = {}, confirm = undefined | Function) {
+      if (Object.keys(params).length === 0) {
+        params = this.showingTeachersTablePagination
+      }
+
       this.fetchingShowTeachers = true
       const pagination = { ...this.showingTeachersTablePagination }
       const offset = pagination.current - 1 || 0
@@ -281,8 +298,6 @@ export default {
             pageSize,
             current: offset + 1
           }
-          console.log(this.showingTeachers)
-          console.log(this.showingTeachersTablePagination)
           this.fetchingShowTeachers = false
           if (confirm) {
             confirm()
@@ -306,6 +321,13 @@ export default {
         sortOrder: sorter.order,
         ...filters
       })
+    },
+    deleteTeacher (tid) {
+      api.deleteOneTeacher(tid)
+        .then(() => {
+          this.$message.success('删除老师成功')
+          this.fetchShowingTeachers()
+        })
     }
   }
 }
