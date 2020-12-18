@@ -28,10 +28,32 @@
       <a-input-password v-model="resetAllPasswordConfirmPass" placeholder="统一新密码"/>
       <p></p>
     </a-modal>
+
+    <!-- 添加老师提示框 -->
+    <a-modal
+      v-model="showingAddingTeacher"
+      title="添加老师"
+      @ok="addingTeacherConfirm"
+      @cancel="addingTeacherCancel"
+      :width=500
+    >
+      <a-input v-model="addingTeacherConfirmUsername" placeholder="登录账号" class="adding-teacher-input-box"/>
+      <a-input-password v-model="addingTeacherConfirmPassword" placeholder="登录密码" class="adding-teacher-input-box"/>
+      <a-input v-model="addingTeacherConfirmName" placeholder="姓名" class="adding-teacher-input-box"/>
+      <a-input v-model="addingTeacherConfirmEmail" placeholder="邮箱" class="adding-teacher-input-box"/>
+      <a-input v-model="addingTeacherConfirmPersonalPage" placeholder="个人主页" class="adding-teacher-input-box"/>
+      <a-textarea
+        v-model="addingTeacherConfirmResearchArea"
+        placeholder="研究领域"
+        :auto-size="{ minRows: 2, maxRows: 6 }"
+        class="adding-teacher-input-box"
+      />
+    </a-modal>
   </div>
 </template>
 
 <script>
+/* eslint-disable @typescript-eslint/camelcase */
 import * as api from '@/api/attendAdmin'
 
 export default {
@@ -40,7 +62,13 @@ export default {
     return {
       showingResetAllPassword: false,
       showingAddingTeacher: false,
-      resetAllPasswordConfirmPass: ''
+      resetAllPasswordConfirmPass: '',
+      addingTeacherConfirmUsername: '',
+      addingTeacherConfirmPassword: '',
+      addingTeacherConfirmName: '',
+      addingTeacherConfirmEmail: '',
+      addingTeacherConfirmPersonalPage: '',
+      addingTeacherConfirmResearchArea: ''
     }
   },
   methods: {
@@ -55,12 +83,57 @@ export default {
           .then(res => {
             this.$message.success(`所有老师的密码已经统一修改成功（共${res.data.count}名）`)
             this.showingResetAllPassword = false
+            this.resetAllPasswordConfirmPass = ''
           })
       }
     },
     resetAllPasswordCancel () {
       this.showingResetAllPassword = false
+      this.resetAllPasswordConfirmPass = ''
+    },
+    handleShowAddingTeacher () {
+      this.showingAddingTeacher = true
+    },
+    addingTeacherCancel () {
+      this.addingTeacherConfirmUsername = ''
+      this.addingTeacherConfirmPassword = ''
+      this.addingTeacherConfirmName = ''
+      this.addingTeacherConfirmEmail = ''
+      this.addingTeacherConfirmPersonalPage = ''
+      this.addingTeacherConfirmResearchArea = ''
+      this.showingAddingTeacher = false
+    },
+    addingTeacherConfirm () {
+      if (!this.addingTeacherConfirmUsername || !this.addingTeacherConfirmPassword || !this.addingTeacherConfirmName ||
+        !this.addingTeacherConfirmEmail || !this.addingTeacherConfirmPersonalPage || !this.addingTeacherConfirmResearchArea) {
+        this.$message.error('请提供必要信息')
+      } else {
+        api.insertOneTeacher({
+          username: this.addingTeacherConfirmUsername,
+          password: this.addingTeacherConfirmPassword,
+          name: this.addingTeacherConfirmName,
+          email: this.addingTeacherConfirmEmail,
+          personal_page: this.addingTeacherConfirmPersonalPage,
+          research_area: this.addingTeacherConfirmResearchArea
+        })
+          .then(() => {
+            this.$message.success('添加成功')
+            this.addingTeacherConfirmUsername = ''
+            this.addingTeacherConfirmPassword = ''
+            this.addingTeacherConfirmName = ''
+            this.addingTeacherConfirmEmail = ''
+            this.addingTeacherConfirmPersonalPage = ''
+            this.addingTeacherConfirmResearchArea = ''
+            this.showingAddingTeacher = false
+          })
+      }
     }
   }
 }
 </script>
+
+<style scope>
+.adding-teacher-input-box {
+  margin: 5px;
+}
+</style>
