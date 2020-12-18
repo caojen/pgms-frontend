@@ -24,15 +24,13 @@ export default {
       current: offset + 1,
       pageSize
     })
-    const students = data.students.map((s: {
-      username: string | undefined;
-      user: {
-        username: string;
-      }
-    }) => {
-      s['username'] = s.user.username
-      return s
-    })
+    const students = []
+    for (let i = 0; i < data.students.length; i++) {
+      students.push({
+        ...data.students[i],
+        username: data.students[i].user.username
+      })
+    }
     commit('setStudents', students)
   },
   

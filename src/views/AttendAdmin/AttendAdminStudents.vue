@@ -17,9 +17,9 @@
     </div>
     <a-table
       :columns="columns"
-      :row-key="record => record.username"
-      :data-source="data"
-      :pagination="pagination"
+      :row-key="record => record.index"
+      :data-source="showingStudents"
+      :pagination="showingStudentsPagination"
       :loading="loading"
       @change="handleTableChange"
     >
@@ -55,27 +55,6 @@
         type="search"
         :style="{ color: filtered ? '#108ee9' : undefined }"
       />
-      <template slot="customRender" slot-scope="text, record, index, column">
-        <span v-if="searchText && searchedColumn === column.dataIndex">
-          <template
-            v-for="(fragment, i) in text
-              .toString()
-              .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
-          >
-            <mark
-              v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-              :key="i"
-              class="highlight"
-              >{{ fragment }}</mark
-            >
-            <template v-else>{{ fragment }}</template>
-          </template>
-        </span>
-        <template v-else>
-          {{ text }}
-        </template>
-      </template>
-
       <span slot="action" slot-scope="text, record">
         <a-config-provider :auto-insert-space-in-button="false">
           <a-button type="primary" ghost @click="changePassword(record)">
@@ -163,10 +142,21 @@
             <p>然后，<a-button @click="downloadTemplate" type="link">点击这里</a-button>下载模版</p>
             <p>根据下载的模版，填充相关的信息，然后点击下面的按钮进入下一步</p>
           </div>
-          <div v-if="current===1">
+          <div v-else-if="current===1">
             <p>请点击下面的按钮选择填充好的模版文件</p>
             <p>选择文件后，请点击“解析”按钮对文件进行解析</p>
             <p>等待解析完成后（进度条显示100%），点击继续进入下一步</p>
+            <div>
+              <a-popover title="提示">
+                <template slot="content">
+                  <p>只需要将原模版文件删除，然后重新上传文件并解析即可</p>
+                </template>
+                <a-button type="link">
+                  如何修改?
+                </a-button>
+              </a-popover>
+              <p></p>
+            </div>
             <a-upload :file-list="fileList" :remove="removeFile" :before-upload="beforeUploadFile">
               <a-button> <a-icon type="upload" /> 选择模版文件 </a-button>
             </a-upload>
@@ -187,20 +177,53 @@
               />
             </div>
           </div>
+          <div v-else-if="current===2" class="adding-students-uploading-body">
+            <a-alert :message="`即将上传学生共${studentsInfo.length}人`" type="info" show-icon/>
+            <a-table
+              :columns="previewColumns"
+              :data-source="studentsInfo"
+              :row-key="record => record.username"
+              :pagination="previewPagination"
+              @change="previewTableChange"
+            >
+            </a-table>
+          </div>
+          <div v-else-if="current===3" class="adding-students-uploading-body">
+            <a-space v-if="addingStudentsUploading">
+              <a-spin/>
+              <span> 正在上传 </span>
+            </a-space>
+            <div v-else>
+              <a-alert
+                message="上传完成"
+                :description="`一共成功添加学生${addingStudentsAffected}人`"
+                type="success"
+                show-icon
+              />
+              <a-table
+                :columns="addingStudentsErrorColumns"
+                :data-source="addingStudentsErrors"
+                :row-key="record => record.username"
+                :pagination="addingStudentsErrorsPagination"
+                @change="addingStudentsErrorsTableChange"
+              >
+              </a-table>
+            </div>
+          </div>
         </div>
         <div class="steps-action">
-          <a-button v-if="current < steps.length - 1" type="primary" @click="() => current++">
+          <a-button v-if="current < steps.length - 1" type="primary" @click="addingStudentsContinue">
             继续
           </a-button>
           <a-button
             v-if="current == steps.length - 1"
             type="primary"
-            @click="$message.success('Processing complete!')"
+            @click="addingStudentsDone"
           >
             完成
           </a-button>
           <a-button v-if="current > 0" style="margin-left: 8px" @click="current--">
-            撤销
+            返回上一步
           </a-button>
         </div>
       </div>
@@ -247,10 +270,21 @@ export default {
   name: 'AttendAdminStudents',
   data () {
     return {
+      showingStudents: [],
+      showingStudentsPagination: {
+        current: 1,
+        pageSize: 20,
+        total: 0
+      },
       loading: false,
       searchText: '',
       searchInput: null,
       columns: [
+        {
+          title: '序号',
+          dataIndex: 'index',
+          width: '5%'
+        },
         {
           title: '登录账号',
           dataIndex: 'username',
@@ -260,11 +294,6 @@ export default {
             filterIcon: 'filterIcon',
             customRender: 'customRender'
           },
-          onFilter: (value, record) =>
-            record.name
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase()),
           onFilterDropdownVisibleChange: visible => {
             if (visible) {
               setTimeout(() => {
@@ -282,11 +311,6 @@ export default {
             filterIcon: 'filterIcon',
             customRender: 'customRender'
           },
-          onFilter: (value, record) =>
-            record.name
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase()),
           onFilterDropdownVisibleChange: visible => {
             if (visible) {
               setTimeout(() => {
@@ -355,18 +379,86 @@ export default {
       ],
       fileList: [],
       studentsInfo: [],
-      parsePercent: 0
+      parsePercent: 0,
+      previewColumns: [
+        {
+          dataIndex: 'username',
+          key: 'username',
+          title: '登录账号'
+        },
+        {
+          title: '登录密码',
+          dataIndex: 'password',
+          key: 'password'
+        },
+        {
+          title: '学生姓名',
+          dataIndex: 'name',
+          key: 'name'
+        },
+        {
+          title: '邮箱',
+          key: 'email',
+          dataIndex: 'email'
+        },
+        {
+          title: '学号',
+          key: 'student_id',
+          dataIndex: 'student_id'
+        },
+        {
+          title: '老师登录账号',
+          key: 'teacher_username',
+          dataIndex: 'teacher_username'
+        }
+      ],
+      previewPagination: {
+        current: 1,
+        pageSize: 7,
+        total: 0
+      },
+      addingStudentsUploading: false,
+      addingStudentsErrors: [],
+      addingStudentsAffected: 0,
+      addingStudentsErrorColumns: [
+        {
+          dataIndex: 'username',
+          key: 'username',
+          title: '学生账号'
+        },
+        {
+          dataIndex: 'teacher_username',
+          key: 'teacher_username',
+          title: '老师账号'
+        },
+        {
+          dataIndex: 'msg',
+          key: 'msg',
+          title: '错误信息'
+        }
+      ],
+      addingStudentsErrorsPagination: {
+        current: 1,
+        pageSize: 7,
+        total: 0
+      }
     }
   },
   computed: {
-    data () {
-      return this.$store.state.attendAdmin.students
-    },
-    pagination () {
-      return this.$store.state.attendAdmin.pagination
-    },
     queryTeachers () {
       return this.$store.state.attendAdmin.queryTeachers
+    }
+  },
+  watch: {
+    previewColumns (newVal) {
+      const previewPagination = { ...this.previewPagination }
+      previewPagination.total = newVal.length
+      this.previewPagination = previewPagination
+    },
+    addingStudentsErrors (newVal) {
+      const pagination = { ...this.addingStudentsErrorsPagination }
+      pagination.total = newVal.length
+      this.addingStudentsErrorsPagination = pagination
     }
   },
   mounted () {
@@ -374,9 +466,10 @@ export default {
   },
   methods: {
     handleTableChange (pagination, filters, sorter) {
-      const pager = { ...this.pagination }
+      console.log('handel table change')
+      const pager = { ...this.showingStudentsPagination }
       pager.current = pagination.current
-      this.$store.commit('setPagination', pager)
+      this.showingStudentsPagination = pager
       this.fetch({
         results: pagination.pageSize,
         page: pagination.current,
@@ -385,21 +478,43 @@ export default {
         ...filters
       })
     },
-    fetch (params = {}) {
+    fetch (params = {}, confirm = undefined | Function) {
       this.loading = true
-      const pagination = { ...this.pagination }
-      const offset = pagination.current - 1
-      const pageSize = pagination.pageSize
+      const pagination = { ...this.showingStudentsPagination }
+      const offset = pagination.current - 1 || 0
+      const pageSize = pagination.pageSize || 20
       const queryName = params.name ? params.name[0] || '' : ''
       const queryUsername = params.username ? params.username[0] || '' : ''
-      this.$store.dispatch('getAllAttendStudents', {
+      api.getAllAttendStudent(
         pageSize,
         offset,
         queryName,
         queryUsername
-      })
-        .then(() => {
+      )
+        .then(res => {
+          const data = res.data
+          const count = data.count
+
+          const students = []
+          for (let i = 0; i < data.students.length; i++) {
+            students.push({
+              ...data.students[i],
+              username: data.students[i].user.username,
+              index: i + 1 + pageSize * offset
+            })
+          }
+          this.showingStudents = students
+          this.$set(this, 'showingStudents', students)
+          console.log('showing student updated', this.showingStudents)
+          this.showingStudentsPagination = {
+            total: count,
+            pageSize,
+            current: offset + 1
+          }
           this.loading = false
+          if (confirm) {
+            confirm()
+          }
         })
     },
     handleSearch (selectedKeys, confirm) {
@@ -416,7 +531,27 @@ export default {
       this.addingStudent = true
     },
     handleShowAddingStudents () {
+      console.log(this.showingStudents)
+      console.log(this.showingStudentsPagination)
       this.addingStudents = true
+      // 清空所有批量添加的中间变量:
+      this.current = 0
+      this.fileList = []
+      this.studentsInfo = []
+      this.parsePercent = 0
+      this.previewPagination = {
+        current: 1,
+        pageSize: 7,
+        total: 0
+      }
+      this.addingStudentsUploading = false
+      this.addingStudentsErrors = []
+      this.addingStudentsAffected = 0
+      this.addingStudentsErrorsPagination = {
+        current: 1,
+        pageSize: 7,
+        total: 0
+      }
     },
     addingStudentChangeTeacher (value) {
       if (value.length > 1) {
@@ -571,6 +706,38 @@ export default {
         this.studentsInfo = parseResult
       }
       reader.readAsArrayBuffer(file)
+    },
+    previewTableChange (pagination) {
+      this.previewPagination = { ...pagination }
+    },
+    addingStudentsContinue () {
+      this.current++
+
+      // 当进入到上传页面时，上传数据:
+      if (this.current === 3) {
+        this.addingStudentsUploading = true
+        api.addManyAttendStudents(this.studentsInfo)
+          .then(res => {
+            this.addingStudentsUploading = false
+            this.fetch()
+            this.$message.success('上传请求已完成')
+            const data = res.data
+            this.addingStudentsAffected = data.affected
+            this.addingStudentsErrors = data.errors.map(e => {
+              return {
+                username: e.username,
+                teacher_username: e.teacher_username,
+                msg: e.err?.response?.msg || e.err || '未知错误'
+              }
+            })
+          })
+      }
+    },
+    addingStudentsErrorsTableChange (pagination) {
+      this.addingStudentsErrorsPagination = pagination
+    },
+    addingStudentsDone () {
+      this.addingStudents = false
     }
   }
 }
@@ -588,5 +755,11 @@ export default {
 }
 .steps-action {
   margin-top: 24px;
+}
+.adding-students-uploading-body {
+  /* text-align: center; */
+  padding-top: 30px;
+  padding-bottom: 40px;
+  padding-right: 30px;
 }
 </style>
