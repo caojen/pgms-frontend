@@ -9,3 +9,11 @@ export const changePasswordForStudent = '/admin/attend/student'
 export const updateStudentInfo = '/admin/attend/student'
 export const updateStudentTeacher = '/admin/attend/student'
 export const queryTeacherByName = '/admin/attend/query/teacher'
+
+// 老师信息界面
+export const insertOneTeacher = '/admin/attend/teacher'
+export const updateOneTeacher = '/admin/attend/teacher'
+export const getOneTeacherInfo = '/admin/attend/teacher'
+export const getAllTeachers = '/admin/attend/teachers'
+export const deleteOneTeacher = '/admin/attend/teacher'
+export const changePasswordForTeacher = '/admin/attend/teacher'

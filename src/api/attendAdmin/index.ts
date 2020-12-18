@@ -85,3 +85,42 @@ export function updateStudentTeacher (id: number, tid: number) {
 export function queryTeacherByName (name: string) {
   return http.get(`${api.queryTeacherByName}?name=${name}`)
 }
+
+export function insertOneTeacher (body: {
+  username: string;
+  password: string;
+  name: string;
+  email: string;
+  personal_page: string;
+  research_area: string;
+}) {
+  return http.post(api.insertOneTeacher, body)
+}
+
+export function updateOneTeacher (tid: number, body: {
+  name: string;
+  research_area: string;
+  personal_page: string;
+  email: string;
+}) {
+  return http.post(`${api.updateOneTeacher}/${tid}`, body)
+}
+
+export function getOneTeacherInfo (tid: number) {
+  return http.get(`${api.getOneTeacherInfo}/${tid}`)
+}
+
+export function getAllTeachers () {
+  return http.get(api.getAllTeachers)
+}
+
+export function deleteOneTeacher (tid: number) {
+  return http.delete(`${api.deleteOneTeacher}/${tid}`)
+}
+
+export function changePasswordForTeacher (tid: number, newPass: string) {
+  const ePass = ende.encodeToHttp(newPass)
+  return http.put(`${api.changePasswordForTeacher}/${tid}`, {
+    password: ePass
+  })
+}
