@@ -472,7 +472,6 @@ export default {
   },
   methods: {
     handleTableChange (pagination, filters, sorter) {
-      console.log('handel table change')
       const pager = { ...this.showingStudentsPagination }
       pager.current = pagination.current
       this.showingStudentsPagination = pager

@@ -2,10 +2,12 @@
   <div>
     <div style="height: 40px">
       <a-row>
-        <a-col :span="3" :offset="18">
-          <a-button type="primary" icon="reset" @click="handleShowResetAllPassword()">
+        <a-col :span="3" :offset="15">
+          <a-button type="primary" icon="lock" @click="handleShowResetAllPassword()">
             重设密码
           </a-button>
+        </a-col>
+        <a-col :span="3">
           <a-button type="primary" icon="plus" @click="handleShowAddingTeacher()">
             添加老师
           </a-button>
@@ -46,10 +48,15 @@ export default {
       this.showingResetAllPassword = true
     },
     resetAllPasswordConfirm () {
-      api.resetAllPasswordForTeacher(this.resetAllPasswordConfirmPass)
-        .then(res => {
-          console.log(res)
-        })
+      if (!this.resetAllPasswordConfirmPass) {
+        this.$message.error('请提供必要信息')
+      } else {
+        api.resetAllPasswordForTeacher(this.resetAllPasswordConfirmPass)
+          .then(res => {
+            this.$message.success(`所有老师的密码已经统一修改成功（共${res.data.count}名）`)
+            this.showingResetAllPassword = false
+          })
+      }
     },
     resetAllPasswordCancel () {
       this.showingResetAllPassword = false
