@@ -42,3 +42,7 @@ export function loginWithToken (token: string) {
     token
   })
 }
+
+export function getIp () {
+  return http.get(api.getCurrentIp)
+}

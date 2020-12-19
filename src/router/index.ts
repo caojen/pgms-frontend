@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Login from '@/views/Login.vue'
 import LoginWithToken from '@/views/Token.vue'
+import ForgetPassword from '@/views/ForgetPassword.vue'
 
 Vue.use(VueRouter)
 
@@ -19,6 +20,11 @@ const routes: Array<RouteConfig> = [
     path: '/token',
     name: 'LoginWithToken',
     component: LoginWithToken
+  },
+  {
+    path: '/find-pass',
+    name: 'ForgetPassword',
+    component: ForgetPassword
   },
   {
     path: '/admin/attend',
