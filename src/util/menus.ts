@@ -71,11 +71,11 @@ const contact = {
       icon: 'contacts',
       description: '联系方式'
     }, {
-      key: '/content/bug',
+      key: '/contact/bug',
       icon: 'bug',
       description: 'Bug报告'
     }, {
-      key: '/content/feedback',
+      key: '/contact/feedback',
       icon: 'rollback',
       description: '反馈意见'
     }]
