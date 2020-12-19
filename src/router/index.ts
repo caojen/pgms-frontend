@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Login from '@/views/Login.vue'
+import LoginWithToken from '@/views/Token.vue'
 
 Vue.use(VueRouter)
 
@@ -13,6 +14,11 @@ const routes: Array<RouteConfig> = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/token',
+    name: 'LoginWithToken',
+    component: LoginWithToken
   },
   {
     path: '/admin/attend',

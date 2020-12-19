@@ -1,19 +1,38 @@
 <template>
   <div id="views-login">
     <div id="views-login-body">
-      <login-form></login-form>
+      <login-form v-if="showLoginForm"></login-form>
     </div>
   </div>
 </template>
 
 <script>
 import LoginForm from './components/LoginForm.vue'
+
 export default {
   components: { LoginForm },
   name: 'Login',
   computed: {
     isLogined () {
       return this.$store.getters.isLogined
+    }
+  },
+  data () {
+    return {
+      showLoginForm: false
+    }
+  },
+  async beforeMount () {
+    // 当初始化界面前，判断当前是否已经登录了账号
+    // 为了避免登录框闪动，首先不展示登录框
+    this.showLoginForm = false
+    if (this.isLogined) {
+      this.$router.push(this.getHomePage())
+    } else {
+      await this.$store.dispatch('getUserStatus')
+      if (this.isLogined === false) {
+        this.showLoginForm = true
+      }
     }
   },
   watch: {
@@ -25,6 +44,7 @@ export default {
   },
   methods: {
     getHomePage () {
+      // 在这里，通过判断用户权限，返回用户的home路径
       return '/admin/attend'
     }
   }

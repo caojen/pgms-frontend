@@ -36,3 +36,9 @@ export function changePassword (uid: number, newpass: string) {
     newpassword: newpass
   })
 }
+
+export function loginWithToken (token: string) {
+  return http.post(api.loginWithToken, {
+    token
+  })
+}
