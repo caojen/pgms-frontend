@@ -46,3 +46,7 @@ export function loginWithToken (token: string) {
 export function getIp () {
   return http.get(api.getCurrentIp)
 }
+
+export function forgetPassword (detail: []) {
+  return http.post(api.forgetPassword, detail)
+}
