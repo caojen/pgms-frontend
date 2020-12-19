@@ -2,6 +2,7 @@
   <div id="views-login">
     <div id="views-login-body">
       <login-form v-if="showLoginForm"></login-form>
+      <a-spin size="large" v-else/>
     </div>
   </div>
 </template>
