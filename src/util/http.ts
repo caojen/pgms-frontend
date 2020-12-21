@@ -3,6 +3,7 @@ import { notification } from 'ant-design-vue'
 import allowFailure from './allowFailure'
 
 const baseURL = 'https://sdcsgraduate.sysu.edu.cn/newpgms/api'
+// const baseURL = 'http://localhost:5001'
 const baseURLSize = baseURL.length
 
 axios.defaults.baseURL = baseURL
