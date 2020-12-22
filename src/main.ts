@@ -16,7 +16,7 @@ new Vue({
   store,
   metaInfo () {
     return {
-      title: '计算机学院研究生管理系统'
+      title: '中山大学｜计算机学院｜研究生管理系统'
     }
   },
   render: h => h(App)
