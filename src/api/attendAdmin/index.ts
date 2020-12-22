@@ -131,3 +131,25 @@ export function resetAllPasswordForTeacher (password: string) {
     password: ePass
   })
 }
+
+export function getAllPositions () {
+  return http.get(api.getAllPositions)
+}
+
+export function changeOnePosition (pid: number, body: {
+  description: string;
+  device: string;
+}) {
+  return http.put(`${api.changeOnePosition}/${pid}`, body)
+}
+
+export function addOnePosition (body: {
+  description: string;
+  device: string;
+}) {
+  return http.post(api.addOnePosition, body)
+}
+
+export function deleteOnePosition (pid: number) {
+  return http.delete(`${api.deleteOnePosition}/${pid}`)
+}

@@ -523,7 +523,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .adding-teacher-input-box {
   margin: 5px;
 }

@@ -18,3 +18,9 @@ export const getAllTeachers = '/admin/attend/teachers'
 export const deleteOneTeacher = '/admin/attend/teacher'
 export const changePasswordForTeacher = '/admin/attend/teacher'
 export const resetAllPasswordForTeacher = '/admin/attend/all/teacher/password'
+
+// 位置管理界面
+export const getAllPositions = '/admin/attend/positions'
+export const changeOnePosition = '/admin/attend/position'
+export const addOnePosition = '/admin/attend/position'
+export const deleteOnePosition = '/admin/attend/position'
