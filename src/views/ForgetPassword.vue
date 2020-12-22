@@ -3,8 +3,7 @@
     <a-alert
       message="Warning"
       description="找回密码的最快方法是直接点击左侧下方的‘联系方式’并直接联系工作人员。本‘找回密码’功能可能会有较大的时间延迟。
-        由于无法确定您的登录态，找回密码失败时（情况包括但不限于：1. 提供信息有误，确实无法找回密码；2. 工作人员无法通过您提供的联系方式与您确认；
-        3. 工作人员开小差了，没有及时处理您的信息），系统无法直接告知。因此，当24小时内没有任何进展时，可视为找回密码失败，并且尽快直接联系工作人员修改密码。"
+        由于无法确定您的登录态，找回密码失败时，系统无法直接告知。因此，当24小时内没有任何进展时，可视为找回密码失败，并且尽快直接联系工作人员修改密码。"
       type="warning"
       show-icon
     />
@@ -125,21 +124,25 @@ export default {
     },
     submit () {
       const email = this.email
-      const detail = [
-        {
-          key: 'email',
-          value: email
-        },
-        ...this.dynamicValidateForm.domains
-      ]
-      api.forgetPassword(detail)
-        .then(() => {
-          this.$message.success('提交成功')
-          this.email = ''
-          this.dynamicValidateForm = {
-            domains: []
-          }
-        })
+      if (!email) {
+        this.$message.error('请提供您的联系邮箱')
+      } else {
+        const detail = [
+          {
+            key: 'email',
+            value: email
+          },
+          ...this.dynamicValidateForm.domains
+        ]
+        api.forgetPassword(detail)
+          .then(() => {
+            this.$message.success('找回密码请求已提交成功，请耐心等待工作人员的回复')
+            this.email = ''
+            this.dynamicValidateForm = {
+              domains: []
+            }
+          })
+      }
     }
   }
 }
