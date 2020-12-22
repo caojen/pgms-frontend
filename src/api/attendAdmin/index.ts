@@ -153,3 +153,34 @@ export function addOnePosition (body: {
 export function deleteOnePosition (pid: number) {
   return http.delete(`${api.deleteOnePosition}/${pid}`)
 }
+
+export function addOneLecture (body: {
+  title: string;
+  content: string;
+  positions: number[];
+  start: Date;
+  end: Date;
+}) {
+  return http.post(api.addOneLecture, body)
+}
+
+export function deleteOneLecture (lid: number) {
+  return http.delete(`${api.deleteOneLecture}/${lid}`)
+}
+
+export function getAllLectures (query: {
+  pageSize: number;
+  offset: number;
+}) {
+  return http.get(`${api.getAllLectures}?pageSize=${query.pageSize}&offset=${query.offset}`)
+}
+
+export function updateOneLecture (lid: number, body: {
+  title: string;
+  content: string;
+  positions: number[];
+  start: Date;
+  end: Date;
+}) {
+  return http.put(`${api.getAllLectures}/${lid}`, body)
+}

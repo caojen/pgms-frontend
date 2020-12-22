@@ -24,3 +24,9 @@ export const getAllPositions = '/admin/attend/positions'
 export const changeOnePosition = '/admin/attend/position'
 export const addOnePosition = '/admin/attend/position'
 export const deleteOnePosition = '/admin/attend/position'
+
+// 讲座管理界面
+export const addOneLecture = '/admin/attend/lecture'
+export const deleteOneLecture = '/admin/attend/lecture'
+export const getAllLectures = '/admin/attend/lectures'
+export const updateOneLecture = '/admin/attend/lecture'
