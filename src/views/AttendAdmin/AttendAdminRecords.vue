@@ -63,7 +63,7 @@
       </div>
 
       <div class="input">
-        <span>选择讲座</span>
+        <span>选择讲座：</span>
         <a-select
           show-search
           :value="selectedLecture"
@@ -80,7 +80,7 @@
       </div>
 
       <div class="input">
-        <span>选择签到位置</span>
+        <span>选择签到位置：</span>
         <a-select
           show-search
           :value="selectedPosition"
