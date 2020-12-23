@@ -82,7 +82,7 @@ export default {
         {
           title: '序号',
           dataIndex: 'index',
-          width: '5%'
+          width: '7%'
         },
         {
           title: '讲座名',
