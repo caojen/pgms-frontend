@@ -8,11 +8,13 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/strftime": "^0.9.2",
     "ant-design-vue": "^1.7.2",
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "export-to-excel": "^0.2.1",
     "file-saver": "^2.0.5",
+    "strftime": "^0.10.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-meta": "^2.4.0",

@@ -79,7 +79,6 @@
           ok-text="确认删除"
           cancel-text="取消"
           @confirm="deleteTeacher(record.id)"
-          style="max-width: 30%"
         >
           <template slot="title">
             <div>确定要删除这个老师吗？</div>

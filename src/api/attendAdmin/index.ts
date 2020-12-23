@@ -161,7 +161,12 @@ export function addOneLecture (body: {
   start: Date;
   end: Date;
 }) {
-  return http.post(api.addOneLecture, body)
+  // 传输时使用时间戳，交给后端进行格式化
+  return http.post(api.addOneLecture, {
+    ...body,
+    start: body.start.valueOf(),
+    end: body.end.valueOf()
+  })
 }
 
 export function deleteOneLecture (lid: number) {
