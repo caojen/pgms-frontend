@@ -189,3 +189,27 @@ export function updateOneLecture (lid: number, body: {
 }) {
   return http.put(`${api.getAllLectures}/${lid}`, body)
 }
+
+export function addOneRecord (lid: number, sid: number, pid: number) {
+  return http.post(`${api.addOneRecord}/${lid}/student/${sid}/${pid}`)
+}
+
+export function deleteOneRecord (rid: number) {
+  return http.delete(`${api.deleteOneRecord}/${rid}`)
+}
+
+export function getAllRecordsOfStudent (sid: number) {
+  return http.get(`${api.getAllRecordsOfStudent}/${sid}/records`)
+}
+
+export function getAllRecords (pageSize: number, offset: number) {
+  return http.get(`${api.getAllRecords}?pageSize=${pageSize}&offset=${offset}`)
+}
+
+export function queryStudentsByUsername (username: string) {
+  return http.get(`${api.queryStudentsByUsername}?username=${username}`)
+}
+
+export function getAllLecturesWithoutQuery () {
+  return http.get(api.getAllLecturesWithoutQuery)
+}

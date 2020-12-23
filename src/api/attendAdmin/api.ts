@@ -30,3 +30,11 @@ export const addOneLecture = '/admin/attend/lecture'
 export const deleteOneLecture = '/admin/attend/lecture'
 export const getAllLectures = '/admin/attend/lectures'
 export const updateOneLecture = '/admin/attend/lecture'
+
+// 考勤管理界面
+export const addOneRecord = '/admin/attend/lecture'
+export const deleteOneRecord = '/admin/attend/record'
+export const getAllRecordsOfStudent = '/admin/attend/students'
+export const getAllRecords = '/admin/attend/records'
+export const queryStudentsByUsername = '/admin/attend/students/query'
+export const getAllLecturesWithoutQuery = '/admin/attend/lectures/noquery'

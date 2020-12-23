@@ -135,7 +135,7 @@
       v-model="showingChangeTeacherPassword"
       title="修改老师密码"
       @ok="changeTeacherPasswordConfirm"
-      @cancel="changeTeacherPasswordConfirm"
+      @cancel="changeTeacherPasswordCancel"
       :width=500
     >
       <div>
@@ -436,6 +436,12 @@ export default {
             this.$message.success('修改成功')
           })
       }
+    },
+    changeTeacherPasswordCancel () {
+      this.showingChangeTeacherPassword = false
+      this.changeTeacherPasswordId = -1
+      this.changeTeacherPasswordConfirmPass = ''
+      this.changeTeacherPasswordUsername = ''
     },
     changePassword (record) {
       this.changeTeacherPasswordId = record.id
