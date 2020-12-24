@@ -27,6 +27,21 @@ const routes: Array<RouteConfig> = [
     component: ForgetPassword
   },
   {
+    path: '/contact',
+    name: 'Contact',
+    component: () => import('@/views/Contact.vue')
+  },
+  {
+    path: '/contact/bug',
+    name: 'Bug',
+    component: () => import('@/views/Bugs.vue')
+  },
+  {
+    path: '/contact/feedback',
+    name: 'Feedback',
+    component: () => import('@/views/Feedback.vue')
+  },
+  {
     path: '/admin/attend',
     name: 'AttendAdminHome',
     component: () => import('@/views/AttendAdmin/AttendAdminHome.vue')
