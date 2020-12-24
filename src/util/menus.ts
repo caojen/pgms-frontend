@@ -61,7 +61,7 @@ const attendAdmin = {
 }
 
 const contact = {
-  when: true,
+  when: false,
   subMenu: {
     key: 'closed',
     icon: 'phone',
