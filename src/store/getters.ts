@@ -11,5 +11,9 @@ export default {
   isAttendAdmin (state: { admintype: string }): boolean {
     const isAttendAdmin = state.admintype === 'attend'
     return isAttendAdmin
+  },
+  isStudent (state: { usertype: string }): boolean {
+    const isStudent = state.usertype === 'student'
+    return isStudent
   }
 }

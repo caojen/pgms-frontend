@@ -132,6 +132,9 @@ export default {
     isAttendAdmin () {
       return this.$store.getters.isAttendAdmin
     },
+    isStudent () {
+      return this.$store.getters.isStudent
+    },
     username () {
       return this.$store.state.username
     },
@@ -146,6 +149,9 @@ export default {
     },
     isAttendAdmin (newVal) {
       Vue.set(this.menus[indexMap.attendAdmin], 'when', newVal)
+    },
+    isStudent (newVal) {
+      Vue.set(this.menus[indexMap.student], 'when', newVal)
     }
   },
   data () {

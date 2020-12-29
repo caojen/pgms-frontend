@@ -1,7 +1,8 @@
 export const openKeys = ['opened']
 export const defaultSelected = [
   '/login',
-  '/admin/attend'
+  '/admin/attend',
+  '/student'
 ]
 
 const notLogined = {
@@ -60,6 +61,24 @@ const attendAdmin = {
   }
 }
 
+const student = {
+  when: false,
+  subMenu: {
+    key: 'opened',
+    icon: 'check',
+    description: '考勤系统',
+    subItems: [{
+      key: '/student',
+      icon: 'user-add',
+      description: '我的信息'
+    }, {
+      key: '/student/records',
+      icon: 'user-add',
+      description: '签到情况'
+    }]
+  }
+}
+
 const contact = {
   when: false,
   subMenu: {
@@ -85,11 +104,13 @@ const contact = {
 export const menus = [
   notLogined,
   attendAdmin,
-  contact
+  contact,
+  student
 ]
 
 export const indexMap = {
   notLogined: 0,
   attendAdmin: 1,
-  contact: 2
+  contact: 2,
+  student: 3
 }
