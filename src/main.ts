@@ -9,7 +9,7 @@ import Meta from 'vue-meta'
 Vue.use(Antd)
 Vue.use(Meta)
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 
 new Vue({
   router,

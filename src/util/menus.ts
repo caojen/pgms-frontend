@@ -69,12 +69,16 @@ const student = {
     description: '考勤系统',
     subItems: [{
       key: '/student',
-      icon: 'user-add',
+      icon: 'user',
       description: '我的信息'
     }, {
       key: '/student/records',
-      icon: 'user-add',
+      icon: 'check-circle',
       description: '签到情况'
+    }, {
+      key: '/student/lectures',
+      icon: 'bar-chart',
+      description: '讲座概览'
     }]
   }
 }
