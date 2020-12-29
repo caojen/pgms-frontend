@@ -72,6 +72,11 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/AttendAdmin/AttendAdminRecords.vue')
   },
   {
+    path: '/student',
+    name: 'StudentHome',
+    component: () => import('@/views/Student/StudentHome.vue')
+  },
+  {
     path: '*',
     name: '404-Page',
     component: () => import('@/views/components/404.vue')

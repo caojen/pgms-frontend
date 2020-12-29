@@ -46,7 +46,13 @@ export default {
   methods: {
     getHomePage () {
       // 在这里，通过判断用户权限，返回用户的home路径
-      return '/admin/attend'
+      if (this.$store.getters.isAttendAdmin) {
+        return '/admin/attend'
+      } else if (this.$store.getters.isStudent) {
+        return '/student'
+      } else {
+        return '/404'
+      }
     }
   }
 }
