@@ -1,4 +1,9 @@
-# frontend
+# pgms-frontend
+
+## 远程服务器配置：
+```
+src/util/http.ts
+```
 
 ## Project setup
 ```

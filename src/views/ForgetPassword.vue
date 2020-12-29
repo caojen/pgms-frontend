@@ -1,9 +1,8 @@
 <template>
   <div v-if="show">
     <a-alert
-      message="Warning"
-      description="找回密码的最快方法是直接点击左侧下方的‘联系方式’并直接联系工作人员。本‘找回密码’功能可能会有较大的时间延迟。
-        由于无法确定您的登录态，找回密码失败时，系统无法直接告知。因此，当24小时内没有任何进展时，可视为找回密码失败，并且尽快直接联系工作人员修改密码。"
+      message="警告"
+      description="使用本方式找回密码可能存在比较大的时间延迟！"
       type="warning"
       show-icon
     />
@@ -15,7 +14,7 @@
       <a-input v-model="email" style="width: 60%"></a-input>
     </div>
     <a-alert
-      message="请在下面添加键值对，提供相关信息。例如：学号/工号，登录账号，姓名，证件号码等。提供的信息越详细，成功概率越高。"
+      message="请在下面提供相关信息。例如：学号/工号，登录账号，姓名，证件号码等。"
       type="info"
       class="tableLine"
     />
@@ -134,6 +133,7 @@ export default {
           },
           ...this.dynamicValidateForm.domains
         ]
+        // 注意：不用发送ip，交给后端来做。
         api.forgetPassword(detail)
           .then(() => {
             this.$message.success('找回密码请求已提交成功，请耐心等待工作人员的回复')
