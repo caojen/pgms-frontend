@@ -1,3 +1,4 @@
 export default {
-  info: {}
+  info: {},
+  teacher: {}
 }

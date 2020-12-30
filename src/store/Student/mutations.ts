@@ -9,5 +9,9 @@ type StateType = typeof state;
 export default {
   setInfo (state: StateType, info: {}) {
     Vue.set(state, 'info', info)
+  },
+
+  setTeacher (state: StateType, info: {}) {
+    Vue.set(state, 'teacher', info)
   }
 }
