@@ -90,7 +90,7 @@ export default {
         })
     },
     handleTableChange (pagination, filters, sorter) {
-      const pager = { ...this.paginations }
+      const pager = { ...this.pagination }
       pager.current = pagination.current
       this.pagination = pager
       this.fetchRecords({
