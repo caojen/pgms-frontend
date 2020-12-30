@@ -199,7 +199,7 @@ export default {
       if (this.conPass !== this.newPass) {
         this.changePasswordMessage = '两个密码不一致'
       } else if (re.test(this.newPass) === false) {
-        this.changePasswordMessage = `规则校验失败。密码需要为${this.passRuleDes}, i.e. ${this.passRule}`
+        this.changePasswordMessage = `规则校验失败。密码需要为${this.passRuleDes}, (${this.passRule})`
       } else {
         this.$store.dispatch('userChangePassword', { uid: this.uid, newpass: this.newPass })
           .then(() => {
