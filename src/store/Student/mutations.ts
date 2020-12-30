@@ -13,5 +13,9 @@ export default {
 
   setTeacher (state: StateType, info: {}) {
     Vue.set(state, 'teacher', info)
+  },
+
+  setEmail (state: StateType, email: string) {
+    Vue.set(state.info, 'email', email)
   }
 }

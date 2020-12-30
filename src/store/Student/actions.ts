@@ -10,5 +10,10 @@ export default {
   async getStudentTeacher ({ commit }: any) {
     const res = await api.getTeacher()
     commit('setTeacher', res.data)
+  },
+
+  async studentChangeEmail ({ commit }: any, email: string) {
+    await api.changeEmail(email)
+    commit('setEmail', email)
   }
 }

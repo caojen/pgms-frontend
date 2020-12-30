@@ -8,3 +8,9 @@ export function getInfo () {
 export function getTeacher () {
   return http.get(api.myTeacher)
 }
+
+export function changeEmail (email: string) {
+  return http.put(api.changeEmail, {
+    email
+  })
+}
