@@ -140,6 +140,9 @@ export default {
     isStudent () {
       return this.$store.getters.isStudent
     },
+    isTeacher () {
+      return this.$store.getters.isTeacher
+    },
     username () {
       return this.$store.state.username
     },
@@ -160,6 +163,10 @@ export default {
     },
     isStudent (newVal) {
       Vue.set(this.menus[indexMap.student], 'when', newVal)
+    },
+    isTeacher (newVal) {
+      Vue.set(this.menus[indexMap.attendTeacher], 'when', newVal)
+      Vue.set(this.menus[indexMap.bichoiceTeacher], 'when', newVal)
     },
     currentRoute (newVal) {
       this.selectedSubMenu = [newVal]
