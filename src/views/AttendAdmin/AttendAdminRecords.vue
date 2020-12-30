@@ -170,9 +170,18 @@ export default {
       selectedLectureId: -1
     }
   },
+  computed: {
+    isAttendAdmin () {
+      return this.$store.getters.isAttendAdmin
+    }
+  },
   mounted () {
-    this.fetchRecords()
-    this.fetchLectures()
+    if (this.isAttendAdmin === false) {
+      this.$router.push('/')
+    } else {
+      this.fetchRecords()
+      this.fetchLectures()
+    }
   },
   methods: {
     handleAddRecord () {

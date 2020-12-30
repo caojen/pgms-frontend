@@ -303,8 +303,17 @@ export default {
       ]
     }
   },
+  created: {
+    isAttendAdmin () {
+      return this.$store.getters.isAttendAdmin
+    }
+  },
   mounted () {
-    this.fetchShowingTeachers()
+    if (this.isAttendAdmin === false) {
+      this.$router.push('/')
+    } else {
+      this.fetchShowingTeachers()
+    }
   },
   methods: {
     handleShowResetAllPassword () {

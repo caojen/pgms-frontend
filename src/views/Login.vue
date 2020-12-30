@@ -50,6 +50,8 @@ export default {
         return '/admin/attend'
       } else if (this.$store.getters.isStudent) {
         return '/student'
+      } else if (this.$store.getters.isTeacher) {
+        return '/teacher'
       } else {
         return '/404'
       }

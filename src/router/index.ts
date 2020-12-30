@@ -4,6 +4,7 @@ import beforeLogin from './beforeLogin'
 import globalRouter from './global'
 import attendAdmin from './attendAdmin'
 import student from './student'
+import teacher from './teacher'
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,7 @@ const routes: Array<RouteConfig> = [
   ...globalRouter,
   ...attendAdmin,
   ...student,
+  ...teacher,
   {
     path: '*',
     name: '404-Page',

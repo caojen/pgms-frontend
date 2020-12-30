@@ -15,5 +15,9 @@ export default {
   isStudent (state: { usertype: string }): boolean {
     const isStudent = state.usertype === 'student'
     return isStudent
+  },
+  isTeacher (state: { usertype: string }): boolean {
+    const isTeacher = state.usertype === 'teacher'
+    return isTeacher
   }
 }

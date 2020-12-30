@@ -123,9 +123,18 @@ export default {
       newLecturePositions: []
     }
   },
+  computed: {
+    isAttendAdmin () {
+      return this.$store.getters.isAttendAdmin
+    }
+  },
   mounted () {
-    this.fetchLectures()
-    this.fetchPositions()
+    if (this.isAttendAdmin === false) {
+      this.$router.push('/')
+    } else {
+      this.fetchLectures()
+      this.fetchPositions()
+    }
   },
   methods: {
     moment,

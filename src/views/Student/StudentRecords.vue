@@ -49,8 +49,17 @@ export default {
       ]
     }
   },
+  computed: {
+    isStudent () {
+      return this.$store.getters.isStudent
+    }
+  },
   mounted () {
-    this.fetchRecords()
+    if (this.isStudent) {
+      this.fetchRecords()
+    } else {
+      this.$router.push('/')
+    }
   },
   methods: {
     fetchRecords (params = {}) {

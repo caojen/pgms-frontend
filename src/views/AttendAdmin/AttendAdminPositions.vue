@@ -110,8 +110,17 @@ export default {
       showingChangePosition: false
     }
   },
+  computed: {
+    isAttendAdmin () {
+      return this.$store.getters.isAttendAdmin
+    }
+  },
   mounted () {
-    this.fetchPositions()
+    if (this.isAttendAdmin === false) {
+      this.$router.push('/')
+    } else {
+      this.fetchPositions()
+    }
   },
   methods: {
     handleShowAddPositions () {

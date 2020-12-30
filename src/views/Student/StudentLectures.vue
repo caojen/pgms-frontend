@@ -75,8 +75,17 @@ export default {
       detail: {}
     }
   },
+  computed: {
+    isStudent () {
+      return this.$store.getters.isStudent
+    }
+  },
   mounted () {
-    this.fetchLectures()
+    if (this.isStudent === false) {
+      this.$router.push('/')
+    } else {
+      this.fetchLectures()
+    }
   },
   methods: {
     fetchLectures (param = {}) {
