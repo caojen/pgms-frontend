@@ -3,7 +3,6 @@
     <div>
       <a-select
         mode="default"
-        placeholder="请选择需要查看考勤情况的学生"
         :value="selectedItems"
         style="width: 100%"
         @select="handleChange"
