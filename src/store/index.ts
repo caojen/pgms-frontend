@@ -7,6 +7,7 @@ import actions from './actions'
 import attendAdmin from './AttendAdmin'
 import student from './Student'
 import teacher from './Teacher'
+import bichoiceAdmin from './BichoiceAdmin'
 
 Vue.use(Vuex)
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
   modules: {
     attendAdmin,
     student,
-    teacher
+    teacher,
+    bichoiceAdmin
   }
 })

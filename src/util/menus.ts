@@ -150,13 +150,40 @@ const contact = {
   }
 }
 
+const bichoiceAdmin = {
+  when: false,
+  subMenu: {
+    key: 'opened',
+    icon: 'check',
+    description: '双选系统',
+    subItems: [{
+      key: '/admin/bichoice',
+      icon: 'user',
+      description: '我的信息'
+    }, {
+      key: '/admin/bichoice/students',
+      icon: 'team',
+      description: '查看学生'
+    }, {
+      key: '/admin/bichoice/teachers',
+      icon: 'audit',
+      description: '查看老师'
+    }, {
+      key: '/admin/bichoice/settings',
+      icon: 'setting',
+      description: '双选设置'
+    }]
+  }
+}
+
 export const menus = [
   notLogined,
   attendAdmin,
   contact,
   student,
   attendTeacher,
-  bichoiceTeacher
+  bichoiceTeacher,
+  bichoiceAdmin
 ]
 
 export const indexMap = {
@@ -165,5 +192,6 @@ export const indexMap = {
   contact: 2,
   student: 3,
   attendTeacher: 4,
-  bichoiceTeacher: 5
+  bichoiceTeacher: 5,
+  bichoiceAdmin: 6
 }

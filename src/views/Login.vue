@@ -52,6 +52,8 @@ export default {
         return '/student'
       } else if (this.$store.getters.isTeacher) {
         return '/teacher'
+      } else if (this.$store.getters.isBichoiceAdmin) {
+        return '/admin/bichoice'
       } else {
         return '/404'
       }

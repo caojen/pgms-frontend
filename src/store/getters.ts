@@ -19,5 +19,9 @@ export default {
   isTeacher (state: { usertype: string }): boolean {
     const isTeacher = state.usertype === 'teacher'
     return isTeacher
+  },
+  isBichoiceAdmin (state: { admintype: string }): boolean {
+    const isBichoiceAdmin = state.admintype === 'bichoice'
+    return isBichoiceAdmin
   }
 }
