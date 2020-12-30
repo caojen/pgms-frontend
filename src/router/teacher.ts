@@ -16,7 +16,7 @@ export default [
   },
   {
     path: '/teacher/lectures',
-    name: 'TeacherRecords',
+    name: 'TeacherLectures',
     component: () => import('@/views/Teacher/TeacherLectures.vue')
   }
 ]
