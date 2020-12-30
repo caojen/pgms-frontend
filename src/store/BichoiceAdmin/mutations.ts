@@ -13,5 +13,17 @@ export default {
 
   setId (state: StateType, id: number) {
     Vue.set(state, 'id', id)
+  },
+
+  setEnrols (state: StateType, enrols: []) {
+    Vue.set(state, 'enrols', enrols)
+  },
+
+  setDegrees (state: StateType, degrees: []) {
+    Vue.set(state, 'degrees', degrees)
+  },
+
+  setSources (state: StateType, sources: []) {
+    Vue.set(state, 'sources', sources)
   }
 }

@@ -1,4 +1,7 @@
 export default {
   name: '',
-  id: 0
+  id: 0,
+  enrols: [],
+  degrees: [],
+  sources: []
 }

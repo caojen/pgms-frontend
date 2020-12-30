@@ -6,7 +6,12 @@ export default [
   },
   {
     path: '/admin/bichoice/students',
-    bane: 'BichoiceAdminStudents',
+    name: 'BichoiceAdminStudents',
     component: () => import('@/views/BichoiceAdmin/BichoiceAdminStudents.vue')
+  },
+  {
+    path: '/admin/bichoice/enrols',
+    name: 'BichoiceAdminEnrols',
+    component: () => import('@/views/BichoiceAdmin/BichoiceAdminEnrols.vue')
   }
 ]
