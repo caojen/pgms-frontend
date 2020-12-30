@@ -15,6 +15,9 @@
               <a-icon type="user" style="fontSize: 19px"/>
             </a>
             <a-menu slot="overlay">
+              <a-menu-item @click="() => this.$router.push('/')">
+                回到主页
+              </a-menu-item>
               <a-menu-item @click="() => this.showPasswordChangeModal = true">
                 修改密码
               </a-menu-item>
@@ -38,6 +41,8 @@
             :default-selected-keys="defaultSelected"
             :open-keys.sync="openKeys"
             @click="menuClick"
+            :multiple="false"
+            v-model="selectedSubMenu"
           >
             <a-sub-menu
               v-for="subMenu in menus.filter(r => r.when)"
@@ -140,6 +145,9 @@ export default {
     },
     uid () {
       return this.$store.state.uid
+    },
+    currentRoute () {
+      return this.$route.path
     }
   },
   watch: {
@@ -152,12 +160,16 @@ export default {
     },
     isStudent (newVal) {
       Vue.set(this.menus[indexMap.student], 'when', newVal)
+    },
+    currentRoute (newVal) {
+      this.selectedSubMenu = [newVal]
     }
   },
   data () {
     return {
       collapsed: false,
       menus,
+      selectedSubMenu: [],
       openKeys,
       defaultSelected,
       showPasswordChangeModal: false,
