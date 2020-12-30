@@ -4,7 +4,7 @@
       <div id="views-token-title" class="item">
         Token
       </div>
-      <a-input-password v-model="token" placeholder="哈希值" size="large" style="width: 600px" class="item"/>
+      <a-input-password v-model="token" placeholder="使用您的一次性Token进行登录" size="large" style="width: 600px" class="item"/>
       <a-button :disabled="!canClick" type="primary" @click="loginWithToken" style="float: right; margin-right: 30px">
         登录
       </a-button>
