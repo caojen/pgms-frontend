@@ -1,4 +1,4 @@
-export const openKeys = ['opened']
+export const openKeys = ['opened', 'opened1']
 export const defaultSelected = [
   '/login',
   '/admin/attend',
@@ -113,7 +113,7 @@ const attendTeacher = {
 const bichoiceTeacher = {
   when: false,
   subMenu: {
-    key: 'opened',
+    key: 'opened1',
     icon: 'check',
     description: '双选系统',
     subItems: [{

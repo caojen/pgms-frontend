@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as api from './api'
 import http from '@/util/http'
 

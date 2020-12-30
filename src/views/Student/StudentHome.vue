@@ -2,7 +2,7 @@
   <div>
     <a-card :loading="loading" title="我的信息" style="max-width: 50%; min-width: 300px;">
       <p>
-        欢迎，{{ name }}
+        欢迎，{{ name }} 同学
       </p>
       <p>
           <span> 学号: {{ studentId }} </span>
