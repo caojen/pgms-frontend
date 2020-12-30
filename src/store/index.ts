@@ -6,6 +6,7 @@ import mutations from './mutations'
 import actions from './actions'
 import attendAdmin from './AttendAdmin'
 import student from './Student'
+import teacher from './Teacher'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
   getters,
   modules: {
     attendAdmin,
-    student
+    student,
+    teacher
   }
 })
