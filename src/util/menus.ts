@@ -95,7 +95,7 @@ const attendTeacher = {
       icon: 'user',
       description: '我的信息'
     }, {
-      key: '/teacher/student',
+      key: '/teacher/students',
       icon: 'team',
       description: '我的学生'
     }, {
