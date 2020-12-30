@@ -118,7 +118,7 @@ const bichoiceTeacher = {
     description: '双选系统',
     subItems: [{
       key: '/teacher/bichoice',
-      icon: 'user',
+      icon: 'info-circle',
       description: '双选概述'
     }, {
       key: '/teacher/bistudent',
