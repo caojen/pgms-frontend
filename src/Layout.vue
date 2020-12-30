@@ -33,7 +33,6 @@
           width="200"
           style="background: #fff"
           v-model="collapsed"
-          collapsible
           theme="light"
         >
           <a-menu

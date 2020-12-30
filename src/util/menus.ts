@@ -161,6 +161,18 @@ const bichoiceAdmin = {
       icon: 'user',
       description: '我的信息'
     }, {
+      key: '/admin/bichoice/enrols',
+      icon: 'bars',
+      description: 'Enrol设置'
+    }, {
+      key: '/admin/bichoice/degrees',
+      icon: 'bars',
+      description: 'Degree设置'
+    }, {
+      key: '/admin/bichoice/sources',
+      icon: 'bars',
+      description: 'Source设置'
+    }, {
       key: '/admin/bichoice/students',
       icon: 'team',
       description: '查看学生'
