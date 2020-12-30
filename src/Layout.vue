@@ -188,6 +188,9 @@ export default {
     const isLogined = this.$store.getters.isLogined
     Vue.set(this.menus[indexMap.notLogined], 'when', !isLogined)
   },
+  mounted () {
+    this.selectedSubMenu = [this.currentRoute]
+  },
   methods: {
     menuClick ({ key }) {
       if (key !== this.$route.path) {
