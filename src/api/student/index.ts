@@ -14,3 +14,7 @@ export function changeEmail (email: string) {
     email
   })
 }
+
+export function getRecords (pageSize: number, offset: number) {
+  return http.get(`${api.myRecords}/?pageSize=${pageSize}&offset=${offset}`)
+}
