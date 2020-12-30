@@ -13,5 +13,10 @@ export default [
     path: '/teacher/records',
     name: 'TeacherRecords',
     component: () => import('@/views/Teacher/TeacherRecords.vue')
+  },
+  {
+    path: '/teacher/lectures',
+    name: 'TeacherRecords',
+    component: () => import('@/views/Teacher/TeacherLectures.vue')
   }
 ]
