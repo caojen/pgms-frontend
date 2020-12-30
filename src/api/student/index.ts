@@ -18,3 +18,7 @@ export function changeEmail (email: string) {
 export function getRecords (pageSize: number, offset: number) {
   return http.get(`${api.myRecords}/?pageSize=${pageSize}&offset=${offset}`)
 }
+
+export function getLectures (pageSize: number, offset: number) {
+  return http.get(`${api.lectures}/?pageSize=${pageSize}&offset=${offset}`)
+}

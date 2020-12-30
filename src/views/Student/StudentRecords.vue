@@ -55,10 +55,10 @@ export default {
   methods: {
     fetchRecords (params = {}) {
       if (Object.keys(params).length === 0) {
-        params = this.paginations
+        params = this.pagination
       }
       this.fetching = true
-      const pagination = { ...this.paginations }
+      const pagination = { ...this.pagination }
       const offset = pagination.current - 1 || 0
       const pageSize = pagination.pageSize || 10
       api.getRecords(pageSize, offset)
