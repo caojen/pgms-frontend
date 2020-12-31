@@ -74,7 +74,7 @@ export default {
   },
   computed: {
     filteredOptions () {
-      return this.students.filter(o => !this.selectedItems.includes(o))
+      return this.students.filter(o => this.selectedItems !== o)
     },
     isTeacher () {
       return this.$store.getters.isTeacher
