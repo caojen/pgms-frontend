@@ -80,3 +80,99 @@ export function insertOrUpdateSetting (key: string, value: string | number) {
     })
   })
 }
+
+export function getFile (id: number) {
+  return http.get(`${api.getFile}/${id}`)
+}
+
+export function deleteFile (id: number) {
+  return http.get(`${api.deleteFile}/${id}`)
+}
+
+export function addBistudent (body: {
+  username: string;
+  password: string;
+  name: string;
+  recommended: number;
+  score: number;
+  graduation_university: string;
+  graduation_major: string;
+  household_register: string;
+  ethnic: string;
+  phone: string;
+  gender: string;
+  email: string;
+  source: number;
+  degree: number;
+}) {
+  return http.post(api.addBistudent, body)
+}
+
+export function addBistudents (body: {
+  username: string;
+  password: string;
+  name: string;
+  recommended: number;
+  score: number;
+  graduation_university: string;
+  graduation_major: string;
+  household_register: string;
+  ethnic: string;
+  phone: string;
+  gender: string;
+  email: string;
+  source: number;
+  degree: number;
+}[]) {
+  return http.post(api.addBistudents, body)
+}
+
+export function changeBistudentInfo (id: number, body: {
+  name: string;
+  recommended: number;
+  score: number;
+  graduation_university: string;
+  graduation_major: string;
+  household_register: string;
+  ethnic: string;
+  phone: string;
+  gender: string;
+  email: string;
+  source: number;
+  degree: number;
+}) {
+  return http.put(`${api.changeBistudentInfo}/${id}`, body)
+}
+
+export function getAllBistudent (query: {
+  pageSize: number;
+  offset: number;
+  username?: string;
+  name?: string;
+  enrol?: string;
+  degree?: string;
+  source?: string;
+}) {
+  const url = `${api.getAllBistudent}?pageSize=${query.pageSize}&offset=${query.offset}&username=${query.username || ''}&name=${query.name || ''}&enrol=${query.enrol || ''}&degree=${query.degree || ''}&source=${query.source || ''}`
+  return http.get(url)
+}
+
+export function getBistudentCanSelectTeacher (id: number) {
+  return http.get(`${api.getBistudentCanSelectTeacher}/${id}`)
+}
+
+export function getBistudentFiles (id: number) {
+  return http.get(`${api.getBistudentFiles}/${id}`)
+}
+
+export function getBistudentSelectedTeacher (id: number) {
+  return http.get(`${api.getBistudentSelectedTeacher}/${id}`)
+}
+
+export function selectTeacherForStudent (bisid: number, tid: number) {
+  return http.put(`${api.selectTeacherForStudent}/${bisid}/teacher/${tid}`)
+}
+
+export function deleteTeacherForStudent (bisid: number, tid: number) {
+  return http.delete(`${api.deleteTeacherForStudent}/${bisid}/teacher/${tid}`)
+}
