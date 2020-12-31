@@ -8,6 +8,36 @@
       </a-col>
     </a-row>
 
+    <a-table
+      :columns="columns"
+      :row-key="record => record.degree_id"
+      :data-source = "degrees"
+      :loading="loading"
+    >
+      <span slot="action" slot-scope="text, record">
+        <a-config-provider :auto-insert-space-in-button="false">
+          <a-button type="primary" @click="changeDegree(record)">
+            修改描述
+          </a-button>
+        </a-config-provider>
+
+        <a-divider type="vertical" />
+
+        <a-popconfirm
+          title="确定要删除这个Degree吗？此操作不可恢复"
+          ok-text="Yes"
+          cancel-text="No"
+          @confirm="deleteDegree(record)"
+        >
+          <a-config-provider :auto-insert-space-in-button="false">
+            <a-button type="danger" ghost>
+              删除Degree
+            </a-button>
+          </a-config-provider>
+        </a-popconfirm>
+      </span>
+    </a-table>
+
     <a-modal
       v-model="adding"
       title="添加Degree"
@@ -37,6 +67,17 @@
       </a-select>
 
     </a-modal>
+
+    <a-modal
+      v-model="changing"
+      title="修改Degree"
+      @ok="changeDegreeComfirm()"
+    >
+      <a-input
+        v-model="changingDegree.degree_description"
+        placeholder="新的Degree描述符"
+      />
+    </a-modal>
   </div>
 </template>
 
@@ -51,7 +92,30 @@ export default {
       adding: false,
       newDegree: '',
       newEnrolId: -1,
-      selectedItems: ''
+      selectedItems: '',
+      columns: [
+        {
+          title: '序号',
+          dataIndex: 'degree_id',
+          width: '12%'
+        },
+        {
+          title: 'Degree描述符',
+          dataIndex: 'degree_description',
+          width: '25%'
+        },
+        {
+          title: 'Enrol描述符',
+          dataIndex: 'enrol_description',
+          width: '25%'
+        },
+        {
+          title: '操作',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
+      changingDegree: {},
+      changing: false
     }
   },
   computed: {
@@ -102,6 +166,32 @@ export default {
           })
       } else {
         this.$message.error('请提供必要信息')
+      }
+    },
+    deleteDegree (degree) {
+      const id = degree.degree_id
+      api.deleteDegree(id)
+        .then(() => {
+          this.$message.success('删除成功')
+          this.fetch()
+        })
+    },
+    changeDegree (degree) {
+      this.changingDegree = {
+        ...degree
+      }
+      this.changing = true
+    },
+    changeDegreeComfirm () {
+      if (this.changingDegree.degree_description === '') {
+        this.$message.error('请提供必要信息')
+      } else {
+        api.changeDegreeDescription(this.changingDegree.degree_id, this.changingDegree.degree_description)
+          .then(() => {
+            this.fetch()
+            this.changing = false
+            this.$message.success('修改成功')
+          })
       }
     }
   }
