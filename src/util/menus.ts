@@ -184,6 +184,10 @@ const bichoiceAdmin = {
       key: '/admin/bichoice/settings',
       icon: 'setting',
       description: '双选设置'
+    }, {
+      key: '/admin/bichoice/summary',
+      icon: 'dot-chart',
+      description: '统计'
     }]
   }
 }

@@ -12,6 +12,7 @@
     <a-table
       :columns="columns"
       :data-source="settings"
+      :loading="fetching"
       bordered
     >
       <span slot="operation" slot-scope="text, record">
