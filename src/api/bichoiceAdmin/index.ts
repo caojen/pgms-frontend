@@ -67,3 +67,16 @@ export function deleteOneSource (id: number) {
 export function getSources () {
   return http.get(api.getSources)
 }
+
+export function getSettings () {
+  return http.get(api.getSettings)
+}
+
+export function insertOrUpdateSetting (key: string, value: string | number) {
+  return http.put(api.insertOrUpdateSetting, {
+    key,
+    value: JSON.stringify({
+      value
+    })
+  })
+}

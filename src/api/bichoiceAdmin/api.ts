@@ -17,3 +17,7 @@ export const addNewSource = '/admin/bichoice/source'
 export const changeSourceDescription = '/admin/bichoice/source'
 export const deleteOneSource = '/admin/bichoice/source'
 export const getSources = '/admin/bichoice/sources'
+
+// 双选设置
+export const getSettings = '/admin/bichoice/settings'
+export const insertOrUpdateSetting = '/admin/bichoice/setting'
