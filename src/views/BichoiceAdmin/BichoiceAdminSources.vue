@@ -136,7 +136,7 @@ export default {
     },
     changeSource (source) {
       this.changing = true
-      this.changingSourceId = source.description
+      this.changingSource = source.description
       this.changingSourceId = source.id
     },
     deleteSource (source) {

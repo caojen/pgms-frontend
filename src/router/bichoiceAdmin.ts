@@ -23,5 +23,10 @@ export default [
     path: '/admin/bichoice/sources',
     name: 'BichoiceAdminSources',
     component: () => import('@/views/BichoiceAdmin/BichoiceAdminSources.vue')
+  },
+  {
+    path: '/admin/bichoice/degrees',
+    name: 'BichoiceAdminDegrees',
+    component: () => import('@/views/BichoiceAdmin/BichoiceAdminDegrees.vue')
   }
 ]
