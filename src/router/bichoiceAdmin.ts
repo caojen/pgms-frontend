@@ -18,5 +18,10 @@ export default [
     path: '/admin/bichoice/settings',
     name: 'BichoiceAdminSettings',
     component: () => import('@/views/BichoiceAdmin/BichoiceAdminSettings.vue')
+  },
+  {
+    path: '/admin/bichoice/sources',
+    name: 'BichoiceAdminSources',
+    component: () => import('@/views/BichoiceAdmin/BichoiceAdminSources.vue')
   }
 ]
