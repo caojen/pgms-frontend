@@ -74,6 +74,13 @@
             </a-button>
           </a-config-provider>
         </a-popconfirm>
+
+        <a-divider type="vertical" />
+        <a-config-provider :auto-insert-space-in-button="false">
+          <a-button type="primary" ghost @click="showTeacherStatus(record)">
+            选择老师
+          </a-button>
+        </a-config-provider>
       </span>
     </a-table>
 
@@ -137,6 +144,46 @@
           </a-select>
         </span>
       </div>
+    </a-modal>
+
+    <!-- 查看选择老师情况的model -->
+    <a-modal
+      v-model="showingTeachers"
+      title="选择老师情况详情"
+      @ok="() => showingTeachers = false"
+      :maskClosable="false"
+      :destroyOnClose="true"
+      width="1150px"
+    >
+      <a-table
+        :columns="teacherColumns"
+        :row-key="record => record.index"
+        :data-source="showTeachers"
+        :loading="loadingShowTeacher"
+      >
+        <span slot="action" slot-scope="text, record">
+          <a-config-provider :auto-insert-space-in-button="false">
+            <a-button
+              type="primary"
+              ghost
+              @click="select(record)"
+              style="color: green; border-color: green"
+              v-if="showSelectedTeachers.indexOf(record.id) === -1"
+            >
+              选择老师
+            </a-button>
+            <a-button
+              type="primary"
+              ghost
+              @click="deselect(record)"
+              style="color: red; border-color: red"
+              v-else
+            >
+              已选择(第{{showSelectedTeachers.indexOf(record.id) + 1}}志愿)
+            </a-button>
+          </a-config-provider>
+        </span>
+      </a-table>
     </a-modal>
   </div>
 </template>
@@ -210,7 +257,7 @@ export default {
           width: '18%'
         },
         {
-          title: '专业',
+          title: '学生类型',
           dataIndex: 'degree',
           width: '15%',
           scopedSlots: {
@@ -227,7 +274,7 @@ export default {
           }
         },
         {
-          title: '生源',
+          title: '毕业学校',
           dataIndex: 'source',
           width: '10%',
           scopedSlots: {
@@ -269,7 +316,43 @@ export default {
       addingStudents: false,
       changingStudents: false,
       changingStudentsId: 0,
-      addingManyStudents: false
+      addingManyStudents: false,
+      showingTeachers: false,
+      showTeachers: [],
+      showingTeacherStudentId: -1,
+      showSelectedTeachers: [],
+      loadingShowTeacher: false,
+      teacherColumns: [
+        {
+          title: '序号',
+          dataIndex: 'index',
+          width: '8%'
+        },
+        {
+          title: '老师姓名',
+          dataIndex: 'name',
+          width: '12%'
+        },
+        {
+          title: '邮箱',
+          dataIndex: 'email',
+          width: '15%'
+        },
+        {
+          title: '个人主页',
+          dataIndex: 'personal_page',
+          width: '15%'
+        },
+        {
+          title: '研究领域',
+          dataIndex: 'research_area',
+          width: '32%'
+        },
+        {
+          title: '操作',
+          scopedSlots: { customRender: 'action' }
+        }
+      ]
     }
   },
   mounted () {
@@ -384,7 +467,6 @@ export default {
         degree: this.getIdOfDegree(record.degree),
         source: this.getIdOfSource(record.source)
       }
-      console.log(this.insertBistudent)
       this.changingStudents = true
       this.addingStudents = true
     },
@@ -406,7 +488,12 @@ export default {
       return ''
     },
     deleteStudent (record) {
-      console.log(record)
+      const id = record.id
+      api.deleteBistudent(id)
+        .then(() => {
+          this.fetchBistudent()
+          this.$message.success('操作成功')
+        })
     },
     addingStudentCancel () {
       this.insertBistudent = {
@@ -427,6 +514,42 @@ export default {
       }
       this.changingStudents = false
       this.addingStudents = false
+    },
+    showTeacherStatus (record) {
+      const id = record.id
+      this.showingTeachers = true
+      this.showingTeacherStudentId = id
+      this.loadingShowTeacher = true
+      const pCanSelect = api.getBistudentCanSelectTeacher(id)
+        .then(res => {
+          const teachers = res.data
+          for (let i = 0; i < teachers.length; i++) {
+            teachers[i].index = i + 1
+          }
+          this.showTeachers = teachers
+        })
+      const pSelected = api.getBistudentSelectedTeacher(id)
+        .then(res => {
+          this.showSelectedTeachers = res.data
+        })
+      Promise.all([pCanSelect, pSelected])
+        .then(() => {
+          this.loadingShowTeacher = false
+        })
+    },
+    select (record) {
+      api.selectTeacherForStudent(this.showingTeacherStudentId, record.id)
+        .then(() => {
+          this.$message.success('选择成功')
+          this.showTeacherStatus({ id: this.showingTeacherStudentId })
+        })
+    },
+    deselect (record) {
+      api.deleteTeacherForStudent(this.showingTeacherStudentId, record.id)
+        .then(() => {
+          this.$message.success('取消选择成功')
+          this.showTeacherStatus({ id: this.showingTeacherStudentId })
+        })
     }
   }
 }

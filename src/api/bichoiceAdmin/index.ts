@@ -158,7 +158,7 @@ export function getAllBistudent (query: {
 }
 
 export function getBistudentCanSelectTeacher (id: number) {
-  return http.get(`${api.getBistudentCanSelectTeacher}/${id}`)
+  return http.get(`${api.getBistudentCanSelectTeacher}/${id}/teachers`)
 }
 
 export function getBistudentFiles (id: number) {
@@ -166,7 +166,7 @@ export function getBistudentFiles (id: number) {
 }
 
 export function getBistudentSelectedTeacher (id: number) {
-  return http.get(`${api.getBistudentSelectedTeacher}/${id}`)
+  return http.get(`${api.getBistudentSelectedTeacher}/${id}/teachers/selected`)
 }
 
 export function selectTeacherForStudent (bisid: number, tid: number) {
@@ -175,4 +175,8 @@ export function selectTeacherForStudent (bisid: number, tid: number) {
 
 export function deleteTeacherForStudent (bisid: number, tid: number) {
   return http.delete(`${api.deleteTeacherForStudent}/${bisid}/teacher/${tid}`)
+}
+
+export function deleteBistudent (bisid: number) {
+  return http.delete(`${api.deleteBistudent}/${bisid}`)
 }
