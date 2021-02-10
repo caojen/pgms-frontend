@@ -361,7 +361,7 @@ export default {
         // content未使用，通过v-if写在html里面了
         {
           title: '填充模版',
-          content: '你需要填充一个含有学生信息的模版'
+          content: '需要填充一个含有学生信息的模版'
         },
         {
           title: '上传模版',
@@ -369,7 +369,7 @@ export default {
         },
         {
           title: '预览',
-          content: '通过解析模版，你可以看到学生的大致信息'
+          content: '通过解析模版，可以看到学生的大致信息'
         },
         {
           title: '上传',
