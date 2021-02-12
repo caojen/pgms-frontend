@@ -204,7 +204,8 @@
     <a-modal
       title="选择学生"
       v-model="showingSelectStudents"
-      @ok="() => showingSelectStudents = false"
+      @ok="() => { showingSelectStudents = false; fetch() }"
+      @cancel="fetch"
       :width=1200
     >
       <a-collapse>
@@ -243,7 +244,7 @@
                 </a-button>
                 <a-button
                   type="primary"
-                  style="background-color: brown; border-color: brown"
+                  style="background-color: #C0C0C0; border-color: #C0C0C0"
                   @click="() => $message.error('不在选择阶段内，或可选名额已满')"
                 >
                   无法选择
@@ -401,13 +402,18 @@ export default {
     },
     showSelected (record) {
       this.showingSelected = true
+      const id = record.id
       this.record = record
+      this.record.selected_students = []
+      api.getTeacherSelectedBistudents(id)
+        .then(res => {
+          this.record.selected_students = res.data
+        })
     },
     selectStudents (record = this.record) {
       const id = record.id
       this.record = record
       this.showingSelectStudents = true
-      this.showStudents = []
       this.loadingShowStudents = true
       api.getBistudentForTeacher(id)
         .then(res => {
@@ -447,6 +453,7 @@ export default {
 
       // 判断有没有冲突，如果有，那么报错:
       let arr = []
+      console.log(enrols, degrees)
       for (let i = 0; i < enrols.length; i++) {
         if (arr.indexOf(enrols[i]?.id) !== -1 || enrols[i]?.id === '' || enrols[i].num < 0) {
           this.$message.error('上传失败：请检查是否有重复的键、键是否合法、值是否为非负整数')
@@ -458,7 +465,7 @@ export default {
 
       arr = []
       for (let i = 0; i < degrees.length; i++) {
-        if (arr.indexOf(degrees[i]?.id) !== -1 || degrees[i]?.id === '' || enrols[i].num < 0) {
+        if (arr.indexOf(degrees[i]?.id) !== -1 || degrees[i]?.id === '' || degrees[i].num < 0) {
           this.$message.error('上传失败：请检查是否有重复的键、键是否合法、值是否为非负整数')
           return
         } else {
@@ -477,6 +484,7 @@ export default {
         })
     },
     select (bisid) {
+      this.loadingShowStudents = true
       api.selectBistudentForTeacher(this.record.id, bisid)
         .then(() => {
           this.$message.success('选择成功')
@@ -484,6 +492,7 @@ export default {
         })
     },
     deselect (bisid) {
+      this.loadingShowStudents = true
       api.deleteBistudentForTeacher(this.record.id, bisid)
         .then(() => {
           this.$message.success('取消选择成功')

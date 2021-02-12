@@ -262,3 +262,7 @@ export function deleteBistudentForTeacher (tid: number, bisid: number) {
 export function getBistudentForTeacher (tid: number) {
   return http.get(`${api.getBistudentsForTeacher}/${tid}/bistudents`)
 }
+
+export function getTeacherSelectedBistudents (tid: number) {
+  return http.get(`${api.getTeacherSelectedBistudents}/${tid}/bistudents/selected`)
+}

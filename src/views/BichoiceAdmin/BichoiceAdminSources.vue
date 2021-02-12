@@ -1,5 +1,12 @@
 <template>
   <div>
+    <a-alert
+      message="一致性警告:为了保持逻辑一致，请不要添加重复的描述符"
+      show-icon
+      type="warning"
+      style="margin-bottom: 30px"
+    />
+
     <div style="height: 40px">
       <a-row>
         <a-col :span="3" :offset="21">

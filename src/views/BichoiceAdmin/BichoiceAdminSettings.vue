@@ -110,8 +110,10 @@ export default {
     insertOrUpdateConfirm () {
       const key = this.newKey
       let value = this.newVal
-      if (!isNaN(parseInt(value))) {
+      if (/^[0-9]+$/.test(value)) {
+        console.log('is int')
         value = parseInt(value)
+        console.log(value)
       }
       api.insertOrUpdateSetting(key, value)
         .then(() => {
