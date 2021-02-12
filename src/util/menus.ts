@@ -16,15 +16,17 @@ const notLogined = {
       key: '/login',
       icon: 'user-add',
       description: '用户登录'
-    }, {
+    }]
+    /* {
       key: '/find-pass',
       icon: 'block',
       description: '忘记密码'
-    }, {
+    },
+    {
       key: '/token',
       icon: 'unlock',
       description: 'Token'
-    }]
+    }] */
   }
 }
 
@@ -188,6 +190,10 @@ const bichoiceAdmin = {
       key: '/admin/bichoice/summary',
       icon: 'dot-chart',
       description: '统计情况'
+    }, {
+      key: '/admin/bichoice/files',
+      icon: 'ordered-list',
+      description: '文件管理'
     }]
   }
 }

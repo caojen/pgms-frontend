@@ -6,6 +6,7 @@
         :value="selectedItems"
         style="width: 100%"
         @select="handleChange"
+        placeholder="请选择学生"
       >
         <a-select-option
           v-for="(item, key) in filteredOptions"
@@ -40,7 +41,7 @@ export default {
   data () {
     return {
       students: [],
-      selectedItems: '',
+      selectedItems: [],
       selectedId: -1,
       records: [],
       pagination: {

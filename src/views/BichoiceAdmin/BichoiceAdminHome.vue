@@ -1,5 +1,13 @@
 <template>
   <div>
+    <a-alert
+      message="警告"
+      description="你正在使用管理员权限，所有操作都会被记录，请谨慎操作"
+      type="warning"
+      show-icon
+      style="margin-bottom: 30px"
+    />
+
     <a-card :loading="loading" title="我的信息" style="max-width: 50%;">
       <p>
         欢迎，{{ name }}

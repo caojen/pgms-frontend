@@ -28,5 +28,10 @@ export default [
     path: '/admin/bichoice/degrees',
     name: 'BichoiceAdminDegrees',
     component: () => import('@/views/BichoiceAdmin/BichoiceAdminDegrees.vue')
+  },
+  {
+    path: '/admin/bichoice/teachers',
+    name: 'BichoiceAdminTeachers',
+    component: () => import('@/views/BichoiceAdmin/BichoiceAdminTeachers.vue')
   }
 ]

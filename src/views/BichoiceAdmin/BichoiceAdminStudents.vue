@@ -306,10 +306,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import * as api from '@/api/bichoiceAdmin'
-import { encodeToHttp } from '@/util/ende'
 import * as xlsx from 'xlsx'
 import { book2blob, openDownloadDialog } from '@/util/fs'
-import { queryTeacherByName } from '@/api/attendAdmin/api'
 
 export default {
   name: 'BichoiceAdminStudents',
@@ -441,8 +439,8 @@ export default {
         phone: '',
         gender: '',
         email: '',
-        source: -1,
-        degree: -1
+        source: '',
+        degree: ''
       },
       sources: [],
       degrees: [],
@@ -605,6 +603,10 @@ export default {
       this.insertBistudent.source = value
     },
     addingStudentConfirm () {
+      if (this.insertBistudent.source === '' || this.insertBistudent.degree === '') {
+        this.$message.error('请选择正确的学生类型和学校类型')
+        return
+      }
       if (!this.changingStudents) {
         api.addBistudent(this.insertBistudent)
           .then(() => {
@@ -613,10 +615,8 @@ export default {
             this.fetchBistudent()
           })
       } else {
-        const password = this.insertBistudent.password
         api.changeBistudentInfo(this.insertBistudent.id, {
-          ...this.insertBistudent,
-          password: password === '' ? undefined : encodeToHttp(password)
+          ...this.insertBistudent
         })
           .then(() => {
             this.$message.success('修改成功')
