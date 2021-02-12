@@ -167,7 +167,7 @@ export function getBistudentCanSelectTeacher (id: number) {
 }
 
 export function getBistudentFiles (id: number) {
-  return http.get(`${api.getBistudentFiles}/${id}`)
+  return http.get(`${api.getBistudentFiles}/${id}/files`)
 }
 
 export function getBistudentSelectedTeacher (id: number) {
@@ -265,4 +265,12 @@ export function getBistudentForTeacher (tid: number) {
 
 export function getTeacherSelectedBistudents (tid: number) {
   return http.get(`${api.getTeacherSelectedBistudents}/${tid}/bistudents/selected`)
+}
+
+export function getFilesCount () {
+  return http.get(api.getFilesCount)
+}
+
+export function getBistudentsInfoBrief () {
+  return http.get(api.getBriefStudentsInfo)
 }

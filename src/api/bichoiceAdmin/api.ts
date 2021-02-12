@@ -25,6 +25,7 @@ export const insertOrUpdateSetting = '/admin/bichoice/setting'
 // 文件相关
 export const getFile = '/admin/bichoice/file'
 export const deleteFile = '/admin/bichoice/file'
+export const getFilesCount = '/admin/bichoice/files/count'
 
 // 学生相关
 export const addBistudent = '/admin/bichoice/bistudent'
@@ -37,6 +38,7 @@ export const getBistudentSelectedTeacher = '/admin/bichoice/bistudent'
 export const selectTeacherForStudent = '/admin/bichoice/bistudent'
 export const deleteTeacherForStudent = '/admin/bichoice/bistudent'
 export const deleteBistudent = '/admin/bichoice/bistudent'
+export const getBriefStudentsInfo = '/admin/bichoice/bistudents/all'
 
 // 老师相关
 export const getAllBiTeachers = '/admin/bichoice/teachers'

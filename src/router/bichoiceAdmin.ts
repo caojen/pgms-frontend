@@ -33,5 +33,10 @@ export default [
     path: '/admin/bichoice/teachers',
     name: 'BichoiceAdminTeachers',
     component: () => import('@/views/BichoiceAdmin/BichoiceAdminTeachers.vue')
+  },
+  {
+    path: '/admin/bichoice/files',
+    name: 'BichoiceAdminFiles',
+    component: () => import('@/views/BichoiceAdmin/BichoiceAdminFiles.vue')
   }
 ]
