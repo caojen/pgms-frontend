@@ -4,13 +4,14 @@
       <a-statistic
         title="文件统计"
         :value="filesCount"
-        style="margin-right: 50px; float: right;"
-        value-style="float: right; color: green"
+        value-style="color: green; padding-right: 2px"
       />
+      <a-button type="primary" block style="margin-top: 10px;" @click="downloadFiles"> 下载文件 </a-button>
+      <a-button type="primary" block style="margin-top: 5px;" @click="downloadAllFiles"> 下载所有文件 </a-button>
     </div>
     <div>
       <a-select
-        style="width: 700px; max-width: 80%;"
+        style="width: 1000px; max-width: 80%;"
         @change="selectChange"
         placeholder="请选择学生"
       >
@@ -23,7 +24,8 @@
     <a-table
       :columns="columns"
       :data-source="files"
-      style="width: 700px; max-width: 80%;"
+      style="width: 1000px; max-width: 80%;"
+      :row-key="record => record.fid"
     >
       <span slot="action" slot-scope="text, record">
         <a-button
@@ -39,6 +41,8 @@
 
 <script>
 import * as api from '@/api/bichoiceAdmin'
+import * as url from '@/api/bichoiceAdmin/api'
+import { downloadFilesAndZip, openDownloadDialog } from '@/util/fs'
 
 export default {
   name: 'BichoiceAdminFiles',
@@ -47,7 +51,8 @@ export default {
       filesCount: 0,
       bistudents: [],
       selectedBistudentId: 0,
-      files: [{ fid: 1, filename: 'filename' }],
+      selectedBistudentIndex: 0,
+      files: [],
       columns: [
         { title: 'fid', dataIndex: 'fid', width: '10%' },
         { title: '文件名', dataIndex: 'filename', width: '70%' },
@@ -74,21 +79,52 @@ export default {
     },
     selectChange (record) {
       this.selectedBistudentId = record
+      this.selectedBistudentIndex = -1
+      for (let i = 0; i < this.bistudents.length; i++) {
+        if (this.bistudents[i].id === record) {
+          this.selectedBistudentIndex = i
+          break
+        }
+      }
       api.getBistudentFiles(this.selectedBistudentId)
         .then(res => {
-          console.log(res.data)
+          this.files = res.data
         })
     },
     downloadFile (record) {
       const fid = record.fid
+      console.log(record)
       api.getFile(fid)
         .then(res => {
           const data = res.data
           const blob = new Blob([data])
-          const objectUrl = URL.createObjectURL(blob)
-          location.href = objectUrl
-          URL.revokeObjectURL(objectUrl)
+          openDownloadDialog(blob, record.filename)
         })
+    },
+    downloadFiles () {
+      if (this.files.length === 0) {
+        this.$message.error('没有需要下载的文件')
+      } else {
+        const prefix = url.getFile
+        const detail = []
+        for (let i = 0; i < this.files.length; i++) {
+          detail.push({
+            url: `${prefix}/${this.files[i].fid}`,
+            filename: this.files[i].filename
+          })
+        }
+        const student = this.bistudents[this.selectedBistudentIndex]
+        downloadFilesAndZip(detail, { zipname: `${student.username}-${student.name}` })
+          .then(() => {
+            this.$message.success('下载已完成')
+          })
+          .catch(() => {
+            this.$message.success('下载失败')
+          })
+      }
+    },
+    downloadAllFiles () {
+      console.log('即将下载所有文件')
     }
   }
 }
@@ -96,6 +132,9 @@ export default {
 
 <style scoped>
 #controller {
-  float: right;
+  width: 15%;
+  position: absolute;
+  right: 10px;
+  text-align: right;
 }
 </style>

@@ -83,7 +83,9 @@ export function insertOrUpdateSetting (key: string, value: string | number) {
 }
 
 export function getFile (id: number) {
-  return http.get(`${api.getFile}/${id}`)
+  return http.get(`${api.getFile}/${id}`, {
+    responseType: 'blob'
+  })
 }
 
 export function deleteFile (id: number) {

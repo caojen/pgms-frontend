@@ -1,5 +1,8 @@
 // @ts-nocheck
 import * as xlsx from 'xlsx'
+import FileSaver from 'file-saver'
+import JSZip from 'jszip'
+import http from '@/util/http'
 
 // 字符串转ArrayBuffer
 function s2ab (s) {
@@ -38,4 +41,34 @@ export function openDownloadDialog (url: string | Blob, saveName: string) {
     event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
   }
   aLink.dispatchEvent(event)
+}
+
+/**
+ *
+ * @param detail url: 文件地址；filename：文件名；subdir：一级子目录名（如果不提供，那么放在根目录），以/结尾
+ * @param config zipname：打包后的文件名;
+ */
+export async function downloadFilesAndZip (detail: {
+  url: string;
+  filename: string;
+  subdir?: string;
+}[], config?: { zipname: string} = { zipname: 'package.zip' }) {
+  function getFile (url) {
+    return http.get(url, { responseType: 'blob' })
+  }
+
+  const zip = new JSZip()
+  for (let i = 0; i < detail.length; i++) {
+    const { url, filename, subdir } = detail[i]
+    const data = (await getFile(url)).data
+    if (!subdir) {
+      subdir = ''
+    }
+    zip.file(`${subdir}/${filename}`, data, { binary: true })
+  }
+
+  zip.generateAsync({ type: 'blob' }).then(content => {
+    // 生成二进制流后，使用file-saver下载
+    FileSaver.saveAs(content, config.zipname)
+  })
 }
