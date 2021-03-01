@@ -25,3 +25,39 @@ export function updateInfo (info: {
 }) {
   return http.put(`${api.updateInfo}`, info)
 }
+
+export function getEnrols () {
+  return http.get(api.getEnrols)
+}
+
+export function getDegrees () {
+  return http.get(api.getDegrees)
+}
+
+export function getStatus () {
+  return http.get(api.getStatus)
+}
+
+export function getBistudents () {
+  return http.get(api.getBistudents)
+}
+
+export function getSelectedBistudents () {
+  return http.get(api.getSelectedBistudents)
+}
+
+export function selectBistudents (id: number) {
+  return http.put(`${api.selectBistudents}/${id}`)
+}
+
+export function deleteBistudents (id: number) {
+  return http.delete(`${api.deleteBistudents}/${id}`)
+}
+
+export function getFileListOfBistudents (id: number) {
+  return http.get(`${api.getFileListOfBistudents}/${id}/files`)
+}
+
+export function getOneFile (bisid: number, fid: number) {
+  return http.get(`${api.getOneFile}/${bisid}/file/${fid}`)
+}

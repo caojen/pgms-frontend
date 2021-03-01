@@ -472,15 +472,14 @@ export default {
           arr.push(degrees[i].id)
         }
       }
-
-      api.updateTeacherEnrols(id, enrols)
+      Promise.all([
+        api.updateTeacherEnrols(id, enrols),
+        api.updateTeacherDegrees(id, degrees)
+      ])
         .then(() => {
-          api.updateTeacherDegrees(id, degrees)
-            .then(() => {
-              this.$message.success('修改成功')
-              this.showingChangingConfig = false
-              this.fetch()
-            })
+          this.$message.success('修改成功')
+          this.showingChangingConfig = false
+          this.fetch()
         })
     },
     select (bisid) {
