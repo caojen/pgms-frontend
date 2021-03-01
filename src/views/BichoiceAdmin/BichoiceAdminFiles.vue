@@ -125,6 +125,32 @@ export default {
     },
     downloadAllFiles () {
       console.log('即将下载所有文件')
+      api.getFileList()
+        .then(res => {
+          const list = res.data
+          const prefix = url.getFile
+          const detail = []
+          for (const key in list) {
+            const value = list[key]
+            const subdir = `${value.username}-${value.name}`
+            const files = value.files
+            for (let i = 0; i < files.length; i++) {
+              detail.push({
+                url: `${prefix}/${files[i].fid}`,
+                filename: files[i].filename,
+                subdir
+              })
+            }
+          }
+
+          downloadFilesAndZip(detail, { zipname: '所有学生上传文件' })
+            .then(() => {
+              this.$message.success('下载已完成')
+            })
+            .catch(() => {
+              this.$message.success('下载失败')
+            })
+        })
     }
   }
 }

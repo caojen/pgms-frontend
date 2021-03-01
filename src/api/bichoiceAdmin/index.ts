@@ -276,3 +276,7 @@ export function getFilesCount () {
 export function getBistudentsInfoBrief () {
   return http.get(api.getBriefStudentsInfo)
 }
+
+export function getFileList () {
+  return http.get(api.getFileList)
+}

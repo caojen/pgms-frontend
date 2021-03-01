@@ -26,6 +26,7 @@ export const insertOrUpdateSetting = '/admin/bichoice/setting'
 export const getFile = '/admin/bichoice/file'
 export const deleteFile = '/admin/bichoice/file'
 export const getFilesCount = '/admin/bichoice/files/count'
+export const getFileList = '/admin/bichoice/files/list'
 
 // 学生相关
 export const addBistudent = '/admin/bichoice/bistudent'
