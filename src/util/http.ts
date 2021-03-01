@@ -4,6 +4,9 @@ import allowFailure from './allowFailure'
 
 // const baseURL = 'https://sdcsgraduate.sysu.edu.cn/newpgms/api' // 后端api前缀
 const baseURL = 'http://127.0.0.1:5001/api'
+
+export const prefix = baseURL
+
 const baseURLSize = baseURL.length
 
 axios.defaults.baseURL = baseURL

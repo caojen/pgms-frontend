@@ -54,7 +54,6 @@ export default {
     loginWithToken () {
       api.loginWithToken(this.token)
         .then(res => {
-          console.log(res)
           this.$message.success('登录成功')
           this.$router.push('/')
         })

@@ -538,8 +538,6 @@ export default {
       this.addingStudent = true
     },
     handleShowAddingStudents () {
-      console.log(this.showingStudents)
-      console.log(this.showingStudentsPagination)
       this.addingStudents = true
       // 清空所有批量添加的中间变量:
       this.current = 0

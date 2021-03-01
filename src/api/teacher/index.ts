@@ -2,6 +2,8 @@
 import * as api from './api'
 import http from '@/util/http'
 
+export const url = api
+
 export function getInfo () {
   return http.get(api.getInfo)
 }
@@ -59,5 +61,7 @@ export function getFileListOfBistudents (id: number) {
 }
 
 export function getOneFile (bisid: number, fid: number) {
-  return http.get(`${api.getOneFile}/${bisid}/file/${fid}`)
+  return http.get(`${api.getOneFile}/${bisid}/file/${fid}`, {
+    responseType: 'blob'
+  })
 }

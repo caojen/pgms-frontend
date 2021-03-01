@@ -12,7 +12,8 @@
         <span class="user-controller" v-if=this.isLogined>
           <a-dropdown>
             <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              <a-icon type="user" style="fontSize: 19px"/>
+              <!-- <a-icon type="user" style="fontSize: 19px"/> -->
+              <a-avatar icon="user" style="backgroundColor: blue;" />
             </a>
             <a-menu slot="overlay">
               <a-menu-item @click="() => this.$router.push('/')">

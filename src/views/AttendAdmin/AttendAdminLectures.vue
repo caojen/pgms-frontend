@@ -160,7 +160,6 @@ export default {
             current: offset + 1
           }
           const lectures = res.data.lectures
-          console.log(lectures)
           for (let i = 0; i < lectures.length; i++) {
             lectures[i].index = pageSize * offset + i + 1
             lectures[i].start = date2String(new Date(lectures[i].start))

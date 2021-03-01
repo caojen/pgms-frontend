@@ -453,7 +453,6 @@ export default {
 
       // 判断有没有冲突，如果有，那么报错:
       let arr = []
-      console.log(enrols, degrees)
       for (let i = 0; i < enrols.length; i++) {
         if (arr.indexOf(enrols[i]?.id) !== -1 || enrols[i]?.id === '' || enrols[i].num < 0) {
           this.$message.error('上传失败：请检查是否有重复的键、键是否合法、值是否为非负整数')

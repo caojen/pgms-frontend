@@ -63,13 +63,58 @@
           </span>
         </a-table>
       </div>
+
+      <a-modal
+        v-model="moreInfo"
+        title="学生详细信息"
+        @ok="() => { record = {}; moreInfo = false; }"
+        @cancel="() => { record = {}; moreInfo = false; }"
+        :width="700"
+      >
+        <div>
+          <div style="margin-bottom: 10px">
+            <img
+              v-if="!!record.image"
+              :src="`${avatarPrefix}/${record.image}`"
+              alt="无效的图像格式"
+              width="150px"
+              height="170px"
+            >
+            <div id="basic-info">
+              <p>姓名：{{ record.name }}</p>
+              <p>学号：{{ record.username }}</p>
+              <p>专业：{{ record.degree }}</p>
+              <p>类型：{{ record.enrol }}</p>
+            </div>
+          </div>
+          <div>
+            <p>联系邮箱：{{ record.email }}</p>
+            <p>毕业大学：{{ record.graduation_university }}</p>
+            <p>本科学校类型：{{ record.source }}</p>
+            <p>本科毕业专业：{{ record.graduation_major }}</p>
+            <p>民族：{{ record.ethnic }}</p>
+            <p>性别：{{ record.gender }}</p>
+            <p>家庭住址：{{ record.household_register }}</p>
+            <p>联系方式：{{ record.phone }}</p>
+            <p>是否推免：{{ record.recommend ? '是': '否' }}</p>
+            <div v-if="files.length > 0">
+              文件列表：
+              <p v-for="(file, index) in files" :key="index" style="margin-bottom: 0">
+                <a-button type="link" @click="download(file)"> {{ file.filename }} </a-button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </a-modal>
     </div>
   </div>
 </template>
 
 <script>
 import * as api from '@/api/teacher'
+import { prefix } from '@/util/http'
 import { dateFormat } from '@/util/date'
+import { openDownloadDialog } from '@/util/fs'
 
 export default {
   name: 'TeacherBichoice',
@@ -84,7 +129,11 @@ export default {
         { title: '专业', dataIndex: 'degree', width: '25%' },
         { title: '注册类型', dataIndex: 'enrol', width: '20%' },
         { title: '操作', scopedSlots: { customRender: 'action' } }
-      ]
+      ],
+      record: {},
+      files: [],
+      moreInfo: false,
+      avatarPrefix: `${prefix}${api.url.getAvatar}`
     }
   },
   mounted () {
@@ -125,6 +174,24 @@ export default {
           this.$message.success('取消选择成功')
           this.fetch()
         })
+    },
+    gotoMoreInfo (record) {
+      this.record = record
+      this.moreInfo = true
+      if (record.id) {
+        api.getFileListOfBistudents(record.id)
+          .then(res => {
+            this.files = res.data
+          })
+      }
+    },
+    download (file) {
+      api.getOneFile(this.record.id, file.fid)
+        .then(res => {
+          const data = res.data
+          const blob = new Blob([data])
+          openDownloadDialog(blob, file.filename)
+        })
     }
   }
 }
@@ -133,5 +200,11 @@ export default {
 <style scoped>
 .students-group {
   margin-bottom: 30px;
+}
+#basic-info {
+  position: absolute;
+  left: 250px;
+  top: 100px;
+  font-size: 15px;
 }
 </style>

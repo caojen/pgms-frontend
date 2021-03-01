@@ -93,7 +93,6 @@ export default {
     },
     downloadFile (record) {
       const fid = record.fid
-      console.log(record)
       api.getFile(fid)
         .then(res => {
           const data = res.data
@@ -124,7 +123,6 @@ export default {
       }
     },
     downloadAllFiles () {
-      console.log('即将下载所有文件')
       api.getFileList()
         .then(res => {
           const list = res.data
