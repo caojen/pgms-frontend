@@ -110,7 +110,7 @@ export default {
     insertOrUpdateConfirm () {
       const key = this.newKey
       let value = this.newVal
-      if (/^[0-9]+$/.test(value)) {
+      if (/^(-?|\+?)[0-9]+$/.test(value)) {
         value = parseInt(value)
       }
       api.insertOrUpdateSetting(key, value)
