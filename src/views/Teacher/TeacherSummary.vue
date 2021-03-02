@@ -8,7 +8,7 @@
         <span v-else-if="status.currentStage === 0">
           学生选择阶段
         </span>
-        <span v-else-if="status.currentStage < status.stageCount">
+        <span v-else-if="status.currentStage <= status.stageCount">
           导师选择第 {{ status.currentStage }} 阶段
         </span>
         <span v-else>

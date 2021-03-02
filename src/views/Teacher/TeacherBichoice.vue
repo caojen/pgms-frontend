@@ -29,7 +29,7 @@
             <a-config-provider :auto-insert-space-in-button="false">
               <a-button
                 type="primary"
-                ghost @click="$message.success('该学生已成功选择')"
+                ghost @click="$message.success('已成功选择该学生')"
                 style="color: green; border-color: green;"
                 v-if="record.selected && !record.canSelect"
               >
@@ -75,19 +75,19 @@
           <div style="margin-bottom: 10px">
             <img
               v-if="!!record.image"
-              :src="`${avatarPrefix}/${record.image}`"
+              :src="`${avatarPrefix}/${record.id}/file/${record.image}`"
               alt="无效的图像格式"
               width="150px"
               height="170px"
             >
-            <div id="basic-info">
+            <div id="basic-info" style="font-weight: bold">
               <p>姓名：{{ record.name }}</p>
               <p>学号：{{ record.username }}</p>
               <p>专业：{{ record.degree }}</p>
               <p>类型：{{ record.enrol }}</p>
             </div>
           </div>
-          <div>
+          <div style="font-weight: bold" id="more-info">
             <p>联系邮箱：{{ record.email }}</p>
             <p>毕业大学：{{ record.graduation_university }}</p>
             <p>本科学校类型：{{ record.source }}</p>
@@ -99,9 +99,12 @@
             <p>是否推免：{{ record.recommend ? '是': '否' }}</p>
             <div v-if="files.length > 0">
               文件列表：
-              <p v-for="(file, index) in files" :key="index" style="margin-bottom: 0">
+              <p v-for="(file, index) in files" :key="index" style="margin-top: 0; margin-bottom: 0;">
                 <a-button type="link" @click="download(file)"> {{ file.filename }} </a-button>
               </p>
+            </div>
+            <div v-else style="color: red">
+              该学生未上传文件
             </div>
           </div>
         </div>
@@ -133,7 +136,7 @@ export default {
       record: {},
       files: [],
       moreInfo: false,
-      avatarPrefix: `${prefix}${api.url.getAvatar}`
+      avatarPrefix: `${prefix}${api.url.getOneFile}`
     }
   },
   mounted () {
@@ -206,5 +209,11 @@ export default {
   left: 250px;
   top: 100px;
   font-size: 15px;
+}
+#more-info p input{
+  margin-top: 4px;
+  display: inline-block;
+  width: 80%;
+  right: 0;
 }
 </style>
