@@ -198,6 +198,32 @@ const bichoiceAdmin = {
   }
 }
 
+const bistudent = {
+  when: false,
+  subMenu: {
+    key: 'opened',
+    icon: 'check',
+    description: '双选系统',
+    subItems: [{
+      key: '/bistudent',
+      icon: 'info-circle',
+      description: '双选概述'
+    }, {
+      key: '/bistudent/info',
+      icon: 'audit',
+      description: '我的信息'
+    }, {
+      key: '/bistudent/file',
+      icon: 'ordered-list',
+      description: '上传文件'
+    }, {
+      key: '/bistudent/teacher',
+      icon: 'user-add',
+      description: '选择导师'
+    }]
+  }
+}
+
 export const menus = [
   notLogined,
   attendAdmin,
@@ -205,7 +231,8 @@ export const menus = [
   student,
   attendTeacher,
   bichoiceTeacher,
-  bichoiceAdmin
+  bichoiceAdmin,
+  bistudent
 ]
 
 export const indexMap = {
@@ -215,5 +242,6 @@ export const indexMap = {
   student: 3,
   attendTeacher: 4,
   bichoiceTeacher: 5,
-  bichoiceAdmin: 6
+  bichoiceAdmin: 6,
+  bistudent: 7
 }

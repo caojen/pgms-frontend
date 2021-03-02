@@ -146,6 +146,9 @@ export default {
     isBichoiceAdmin () {
       return this.$store.getters.isBichoiceAdmin
     },
+    isBistudent () {
+      return this.$store.getters.isBistudent
+    },
     username () {
       return this.$store.state.username
     },
@@ -173,6 +176,9 @@ export default {
     },
     isBichoiceAdmin (newVal) {
       Vue.set(this.menus[indexMap.bichoiceAdmin], 'when', newVal)
+    },
+    isBistudent (newVal) {
+      Vue.set(this.menus[indexMap.bistudent], 'when', newVal)
     },
     currentRoute (newVal) {
       this.selectedSubMenu = [newVal]

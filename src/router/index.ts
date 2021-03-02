@@ -6,6 +6,7 @@ import attendAdmin from './attendAdmin'
 import student from './student'
 import teacher from './teacher'
 import bichoiceAdmin from './bichoiceAdmin'
+import bistudent from './bistudent'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,7 @@ const routes: Array<RouteConfig> = [
   ...student,
   ...teacher,
   ...bichoiceAdmin,
+  ...bistudent,
   {
     path: '*',
     name: '404-Page',
