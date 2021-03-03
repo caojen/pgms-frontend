@@ -121,7 +121,7 @@ export default {
 #upload-confirm {
   margin-left: 74%;
   margin-top: 10px;
-  margin-bottom: 200px;
+  margin-bottom: 50px;
 }
 #image-show {
   width: 300px;
