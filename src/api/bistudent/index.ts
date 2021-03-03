@@ -1,6 +1,8 @@
 import * as api from './api'
 import http from '@/util/http'
 
+export const url = api
+
 export function getBichoiceInfo () {
   return http.get(api.getBichoiceInfo)
 }
@@ -35,11 +37,19 @@ export function getFile (fid: number) {
 }
 
 export function postFile (file: Blob) {
-  console.log('todo: post file', file)
+  const formData = new FormData()
+  formData.append('file', file)
+  return http.post(api.postFile, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
 }
 
 export function updateImage (file: Blob) {
-  console.log('todo: post image', file)
+  const formData = new FormData()
+  formData.append('file', file)
+  return http.post(api.updateImage, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
 }
 
 export function deleteFile (fid: number) {
