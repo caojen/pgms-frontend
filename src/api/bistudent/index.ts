@@ -59,3 +59,11 @@ export function deleteFile (fid: number) {
 export function getFileList () {
   return http.get(api.getFileList)
 }
+
+export function orderUp (index: number) {
+  return http.put(`${api.orderUp}/${index}`)
+}
+
+export function orderDown (index: number) {
+  return http.put(`${api.orderDown}/${index}`)
+}
