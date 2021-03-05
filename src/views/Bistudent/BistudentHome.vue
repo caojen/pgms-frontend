@@ -56,7 +56,7 @@ export default {
           return 0
         } else if (currentStage === 0) {
           return 1
-        } else if (currentStage < this.tatus.stageCount) {
+        } else if (currentStage < this.status.stageCount) {
           return 2
         } else {
           return 3
