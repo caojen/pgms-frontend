@@ -48,7 +48,7 @@
     <a-table
       :columns="columns"
       :data-source="teachers"
-      :row-key="record => record.index"
+      :row-key="record => record.id"
     >
       <span slot="action" slot-scope="text, record">
         <a-config-provider :auto-insert-space-in-button="false">
@@ -69,6 +69,21 @@
         </a-config-provider>
       </span>
     </a-table>
+
+    <a-modal
+      v-model="showingTeacherInfo"
+      title="老师信息"
+      @ok="() => showingTeacherInfo = false"
+      @cancel="() => showingTeacherInfo = false"
+      :width=1000
+    >
+      <a-descriptions :bordered="true">
+        <a-descriptions-item label="姓名"> {{ record.name }} </a-descriptions-item>
+        <a-descriptions-item label="邮箱"> {{ record.email }} </a-descriptions-item>
+        <a-descriptions-item label="个人主页"> {{ record.personal_page }} </a-descriptions-item>
+        <a-descriptions-item label="研究领域"> {{ record.research_area }} </a-descriptions-item>
+      </a-descriptions>
+    </a-modal>
   </div>
 </template>
 
@@ -118,7 +133,6 @@ export default {
             endTime: new Date(JSON.parse(res.data.end_time).value)
           }
           this.status.choosable = this.status.currentStage === 0 && now.getTime() >= this.status.beginTime.getTime() && now <= this.status.endTime.getTime()
-          console.log(now.getTime(), this.status.beginTime.getTime(), this.status.endTime.getTime())
         })
       Promise.all([pInfo, pTeacher, pStatus])
         .then(() => {
