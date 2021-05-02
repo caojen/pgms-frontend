@@ -186,11 +186,11 @@ const bichoiceAdmin = {
       key: '/admin/bichoice/settings',
       icon: 'setting',
       description: '变量设置'
-    }, {
+    }, /* {
       key: '/admin/bichoice/summary',
       icon: 'dot-chart',
       description: '统计情况'
-    }, {
+    }, */{
       key: '/admin/bichoice/files',
       icon: 'ordered-list',
       description: '文件管理'
