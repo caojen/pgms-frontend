@@ -217,7 +217,7 @@ export default {
     handleTableChange (pagination, filters, sorter) {
       const pager = { ...this.paginations }
       pager.current = pagination.current
-      this.showingTeachersTablePagination = pager
+      this.paginations = pager
       this.fetchRecords({
         results: pagination.pageSize,
         page: pagination.current,

@@ -87,7 +87,7 @@ export default {
         {
           title: '讲座名',
           dataIndex: 'title',
-          width: '15%'
+          width: '25%'
         },
         {
           title: '开始时间',

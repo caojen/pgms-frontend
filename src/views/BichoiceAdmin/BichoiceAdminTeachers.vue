@@ -284,8 +284,8 @@ export default {
       columns: [
         { title: '序号', dataIndex: 'index', width: '8%' },
         // { title: '登录账号', dataIndex: 'username', width: '13%' },
-        { title: '姓名', dataIndex: 'name', width: '15%' },
-        { title: '邮箱', dataIndex: 'email', width: '15%' },
+        { title: '姓名', dataIndex: 'name', width: '10%' },
+        { title: '邮箱', dataIndex: 'email', width: '20%' },
         { title: '已选择', dataIndex: 'students_count', width: '12%' },
         { title: '操作', scopedSlots: { customRender: 'action' } }
       ],
@@ -471,14 +471,14 @@ export default {
           arr.push(degrees[i].id)
         }
       }
-      Promise.all([
-        api.updateTeacherEnrols(id, enrols),
-        api.updateTeacherDegrees(id, degrees)
-      ])
+      api.updateTeacherEnrols(id, enrols)
         .then(() => {
-          this.$message.success('修改成功')
-          this.showingChangingConfig = false
-          this.fetch()
+          api.updateTeacherDegrees(id, degrees)
+            .then(() => {
+              this.$message.success('修改成功')
+              this.showingChangingConfig = false
+              this.fetch()
+            })
         })
     },
     select (bisid) {
