@@ -2,8 +2,8 @@ import axios from 'axios'
 import { notification } from 'ant-design-vue'
 import allowFailure from './allowFailure'
 
-// const baseURL = 'https://sdcsgraduate.sysu.edu.cn/newpgms/api' // 后端api前缀
-const baseURL = 'http://10.8.11.136/newpgms/api'
+const baseURL = 'https://sdcsgraduate.sysu.edu.cn/newpgms/api' // 后端api前缀
+// const baseURL = 'http://10.8.11.136/newpgms/api'
 
 export const prefix = baseURL
 
